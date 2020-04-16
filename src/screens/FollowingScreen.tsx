@@ -4,11 +4,6 @@ import * as NB from 'native-base';
 export default function FollowingScreen() {
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Body>
-          <NB.Title>Following</NB.Title>
-        </NB.Body>
-      </NB.Header>
       <NB.Content>
         <NB.List>
           <NB.ListItem itemDivider>

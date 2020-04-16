@@ -1,17 +1,19 @@
 import React from 'react';
 import * as NB from 'native-base';
 import SearchBox from '../components/SearchBox';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SearchScreen() {
+  const navigation = useNavigation();
+
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Body>
-          <NB.Title>Search News</NB.Title>
-        </NB.Body>
-      </NB.Header>
       <NB.Content>
-        <SearchBox />
+        <SearchBox
+          onEnter={() => {
+            navigation.navigate('Search List');
+          }}
+        />
         <NB.Text>Search History</NB.Text>
         <NB.List>
           <NB.ListItem>
