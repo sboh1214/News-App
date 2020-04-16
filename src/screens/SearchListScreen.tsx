@@ -1,19 +1,24 @@
 import React, {useState} from 'react';
 import * as NB from 'native-base';
+import {Bar} from 'react-native-progress';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
 
 export default function FeedScreen() {
   const [searchString, setSearchString] = useState<String>();
   const [resultList, setResultList] = useState<Array<News>>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   function searchNews() {
+    setIsLoading(true);
     searchNewsByNaver(searchString ?? '')
       .then((result) => {
         setResultList(result);
+        setIsLoading(false);
       })
       .catch((reason) => {
         console.log(reason);
+        setIsLoading(false);
       });
   }
 
@@ -26,6 +31,7 @@ export default function FeedScreen() {
             setSearchString(text);
           }}
         />
+        {isLoading === true && <Bar indeterminate style={{flex: 1}} />}
         <NB.List>
           {resultList?.map((item, index) => {
             return (

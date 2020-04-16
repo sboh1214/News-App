@@ -8,7 +8,7 @@ type SearchBoxProps = {
 
 export default function SearchBox({onEnter, onChangeText}: SearchBoxProps) {
   return (
-    <NB.Item rounded style={{margin:12, marginStart:12}}>
+    <NB.Item rounded style={{margin:12}}>
       <NB.Icon active name="search" />
       <NB.Input
         placeholder="Rounded Textbox"
