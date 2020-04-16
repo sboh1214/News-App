@@ -9,35 +9,19 @@ import FollowingScreen from 'screens/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
 import React, {useState, useEffect} from 'react';
 
-const FeedStack = createStackNavigator();
-function FeedStackScreen() {
-  return (
-    <FeedStack.Navigator>
-      <FeedStack.Screen name="Feed" component={FeedScreen} />
-    </FeedStack.Navigator>
-  );
-}
-
-const SearchStack = createStackNavigator();
-function SearchStackScreen() {
-  return (
-    <SearchStack.Navigator>
-      <SearchStack.Screen name="Search" component={SearchScreen} />
-      <SearchStack.Screen name="Search List" component={SearchListScreen} />
-    </SearchStack.Navigator>
-  );
-}
-
-const FollowingStack = createStackNavigator();
-function FollowingStackScreen() {
-  return (
-    <FollowingStack.Navigator>
-      <FollowingStack.Screen name="Following" component={FollowingScreen} />
-    </FollowingStack.Navigator>
-  );
-}
-
 const Tab = createBottomTabNavigator();
+
+function TabScreen() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Feed" component={FeedScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Following" component={FollowingScreen} />
+    </Tab.Navigator>
+  );
+}
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const [realm, setRealm] = useState<Object | null>(null);
@@ -55,11 +39,10 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Feed" component={FeedStackScreen} />
-        <Tab.Screen name="Search" component={SearchStackScreen} />
-        <Tab.Screen name="Following" component={FollowingStackScreen} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="News App" component={TabScreen} />
+        <Stack.Screen name="Search List" component={SearchListScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
