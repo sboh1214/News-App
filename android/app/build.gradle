@@ -152,9 +152,9 @@ android {
         }
         release {
             storeFile rootProject.file("NewsApp-Upload.jks")
-            storePassword System.getProperty("APPCENTER_KEYSTORE_PASSWORD")
-            keyAlias System.getProperty("APPCENTER_KEY_ALIAS")
-            keyPassword System.getProperty("APPCENTER_KEY_PASSWORD")
+            storePassword System.getProperty("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias System.getProperty("ANDROID_KEY_ALIAS")
+            keyPassword System.getProperty("ANDROID_KEY_PASSWORD")
         }
     }
     buildTypes {
