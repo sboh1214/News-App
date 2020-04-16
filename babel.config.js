@@ -15,7 +15,7 @@ module.exports = {
           '.jsx',
           '.js',
           '.json',
-        ]
+        ],
       },
     ],
   ],

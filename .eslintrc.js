@@ -1,5 +1,3 @@
-const projectPath = path.resolve(__dirname, './src');
-
 module.exports = {
   root: true,
   extends: [
