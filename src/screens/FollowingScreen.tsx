@@ -7,16 +7,19 @@ export default function FollowingScreen() {
       <NB.Content>
         <NB.List>
           <NB.ListItem itemDivider>
-            <NB.Text>A</NB.Text>
+            <NB.Text>Saved & History</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
             <NB.Text>Aaron Bennet</NB.Text>
+          </NB.ListItem>
+          <NB.ListItem itemDivider>
+            <NB.Text>Reading List</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
             <NB.Text>Ali Connors</NB.Text>
           </NB.ListItem>
           <NB.ListItem itemDivider>
-            <NB.Text>B</NB.Text>
+            <NB.Text>RSS Feed</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
             <NB.Text>Bradley Horowitz</NB.Text>

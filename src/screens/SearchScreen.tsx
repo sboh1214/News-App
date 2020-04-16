@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as NB from 'native-base';
 import SearchBox from '../components/SearchBox';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function SearchScreen() {
   const navigation = useNavigation();
+  const [searchText, setSearchText] = useState<String>('');
 
   return (
     <NB.Container>
@@ -12,6 +13,9 @@ export default function SearchScreen() {
         <SearchBox
           onEnter={() => {
             navigation.navigate('Search List');
+          }}
+          onChangeText={(text: String) => {
+            setSearchText(text);
           }}
         />
         <NB.Text>Search History</NB.Text>
