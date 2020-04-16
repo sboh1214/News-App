@@ -16,7 +16,11 @@ jobs:
           npm install
       - name: Build Android Release
         run: |
-          cd android && ./gradlew bundleRelease -ANDROID_KEYSTORE_PASSWORD='${{ secrets.ANDROID_KEYSTORE_PASSWORD }}' -ANDROID_KEYSTORE_ALIAS='upload' -ANDROID_KEY_PASSWORD='${{ secrets.ANDROID_KEY_PASSWORD }}'
+          cd android && ./gradlew bundleRelease
+        env:
+          ANDROID_KEYSTORE_PASSWORD: '${{ secrets.ANDROID_KEYSTORE_PASSWORD }}'
+          ANDROID_KEYSTORE_ALIAS: 'upload'
+          ANDROID_KEY_PASSWORD: '${{ secrets.ANDROID_KEY_PASSWORD }}'
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
