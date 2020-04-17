@@ -4,8 +4,8 @@ import {Bar} from 'react-native-progress';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
 
-export default function FeedScreen() {
-  const [searchString, setSearchString] = useState<String>();
+export default function FeedScreen({text}) {
+  const [searchString, setSearchString] = useState<String>(text);
   const [resultList, setResultList] = useState<Array<News>>();
   const [isLoading, setIsLoading] = useState<Boolean>(false);
 

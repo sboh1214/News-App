@@ -24,19 +24,6 @@ function TabScreen() {
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [realm, setRealm] = useState<Object | null>(null);
-
-  useEffect(() => {
-    Realm.open({
-      schema: [{name: 'Dog', properties: {name: 'string'}}],
-    }).then((result: any) => {
-      setRealm(result);
-    });
-    return () => {
-      realm?.close();
-    };
-  }, [realm]);
-
   return (
     <NavigationContainer>
       <Stack.Navigator>
