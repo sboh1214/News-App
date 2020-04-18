@@ -132,7 +132,7 @@ android {
         applicationId "com.sboh1214.newsapp.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 12
         versionName "0.2.2"
     }
     splits {
@@ -151,9 +151,9 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile rootProject.file("NewsApp-Upload.jks")
+            storeFile file("NewsApp-Upload.jks")
             storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            keyAlias 'upload'
+            keyAlias "upload"
             keyPassword System.getenv("ANDROID_KEY_PASSWORD")
         }
     }

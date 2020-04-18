@@ -10,11 +10,6 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore",
     "version": "react-native-version"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run version"
-    }
-  },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.9",
     "@react-navigation/bottom-tabs": "^5.2.6",
