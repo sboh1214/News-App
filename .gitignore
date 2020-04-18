@@ -30,8 +30,6 @@ local.properties
 *.iml
 
 # Visual Studio Code
-#
-.vscode/
 
 # node.js
 #
@@ -61,3 +59,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+.jest/
+coverage/

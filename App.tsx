@@ -2,12 +2,11 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Realm from 'realm';
 import FeedScreen from 'screens/FeedScreen';
 import SearchScreen from 'screens/SearchScreen';
 import FollowingScreen from 'screens/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 const Tab = createBottomTabNavigator();
 

@@ -5,3 +5,8 @@ export const SearchHistorySchema = {
     date: 'date',
   },
 };
+
+export type SearchHistory = {
+  query: string;
+  date: Date;
+};
