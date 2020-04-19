@@ -1,6 +1,6 @@
 {
   "name": "news-app",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,6 +9,11 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore",
     "version": "react-native-version"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run version"
+    }
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.9",

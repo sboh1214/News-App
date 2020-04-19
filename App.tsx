@@ -22,7 +22,7 @@ function TabScreen() {
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function NewsApp() {
   return (
     <NavigationContainer>
       <Stack.Navigator>

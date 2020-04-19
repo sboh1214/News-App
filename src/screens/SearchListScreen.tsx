@@ -31,8 +31,8 @@ export default function FeedScreen({text}: FeedScreenProps) {
       <NB.Content>
         <SearchBox
           onEnter={searchNews}
-          onChangeText={(text: String) => {
-            setSearchString(text);
+          onChangeText={(searchText: String) => {
+            setSearchString(searchText);
           }}
         />
         {isLoading === true && <Bar indeterminate style={{flex: 1}} />}

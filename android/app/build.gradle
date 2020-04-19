@@ -132,8 +132,8 @@ android {
         applicationId "com.sboh1214.newsapp.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "0.2.2"
+        versionCode 13
+        versionName "0.2.3"
     }
     splits {
         abi {

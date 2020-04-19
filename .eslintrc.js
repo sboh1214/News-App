@@ -22,6 +22,9 @@ module.exports = {
       {js: 'never', jsx: 'never', ts: 'never', tsx: 'never', json: 'never'},
     ],
   },
+  env: {
+    jest: true,
+  },
   settings: {
     'import/resolver': {
       'babel-module': {},
