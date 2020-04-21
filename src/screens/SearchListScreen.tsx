@@ -3,10 +3,23 @@ import * as NB from 'native-base';
 import {Bar} from 'react-native-progress';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
+import {StyleSheet} from 'react-native';
 
 type FeedScreenProps = {
   text: string;
 };
+
+const styles = StyleSheet.create({
+  loadingBar: {
+    width: '94%',
+  },
+  listItem: {
+    marginVertical: -12,
+  },
+  card: {
+    flex: 1,
+  },
+});
 
 export default function FeedScreen({text}: FeedScreenProps) {
   const [searchString, setSearchString] = useState<String>(text);
@@ -20,8 +33,7 @@ export default function FeedScreen({text}: FeedScreenProps) {
         setResultList(result);
         setIsLoading(false);
       })
-      .catch((reason) => {
-        console.log(reason);
+      .catch(() => {
         setIsLoading(false);
       });
   }
@@ -35,12 +47,12 @@ export default function FeedScreen({text}: FeedScreenProps) {
             setSearchString(searchText);
           }}
         />
-        {isLoading === true && <Bar indeterminate style={{flex: 1}} />}
+        {isLoading === true && <Bar indeterminate style={styles.loadingBar} />}
         <NB.List>
           {resultList?.map((item, index) => {
             return (
-              <NB.ListItem key={index} noBorder style={{marginVertical: -12}}>
-                <NB.Card key={index} style={{flex: 1}}>
+              <NB.ListItem key={index} noBorder style={styles.listItem}>
+                <NB.Card key={index} style={styles.card}>
                   <NB.CardItem>
                     <NB.Text>{item.title}</NB.Text>
                   </NB.CardItem>

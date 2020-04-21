@@ -4,6 +4,13 @@ import * as NB from 'native-base';
 import SearchBox from 'components/SearchBox';
 import {useNavigation} from '@react-navigation/native';
 import {SearchHistorySchema, SearchHistory} from 'utils/realm';
+import {StyleSheet} from 'react-native';
+
+const styles = StyleSheet.create({
+  listItem: {
+    justifyContent: 'space-between',
+  },
+});
 
 export default function SearchScreen() {
   const navigation = useNavigation();
@@ -19,19 +26,21 @@ export default function SearchScreen() {
     return () => {};
   }, [realm]);
 
+  const onEnter = () => {
+    realm?.write(() => {
+      realm.create('Search History', {
+        query: searchText,
+        date: new Date(),
+      });
+    });
+    navigation.navigate('Search List', {text: searchText});
+  };
+
   return (
     <NB.Container>
       <NB.Content>
         <SearchBox
-          onEnter={() => {
-            realm?.write(() => {
-              realm.create('Search History', {
-                query: searchText,
-                date: new Date(),
-              });
-            });
-            navigation.navigate('Search List', {text: searchText});
-          }}
+          onEnter={onEnter}
           onChangeText={(text: String) => {
             setSearchText(text);
           }}
@@ -42,9 +51,7 @@ export default function SearchScreen() {
             ?.objects<SearchHistory>('Search History')
             .map((item, index) => {
               return (
-                <NB.ListItem
-                  key={index}
-                  style={{justifyContent: 'space-between'}}>
+                <NB.ListItem key={index} style={styles.listItem}>
                   <NB.Text>{item.query}</NB.Text>
                   <NB.Text>{item.date.toString().slice(10)}</NB.Text>
                 </NB.ListItem>
