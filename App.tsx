@@ -7,6 +7,7 @@ import SearchScreen from 'screens/SearchScreen';
 import FollowingScreen from 'screens/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
 import React from 'react';
+import AddNewsScreen from 'screens/AddNewsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,9 +26,13 @@ const Stack = createStackNavigator();
 export default function NewsApp() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
         <Stack.Screen name="News App" component={TabScreen} />
         <Stack.Screen name="Search List" component={SearchListScreen} />
+        <Stack.Screen name="Add News" component={AddNewsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

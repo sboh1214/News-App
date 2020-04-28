@@ -2,7 +2,7 @@ const {defaults: tsjPreset} = require('ts-jest/presets');
 
 module.exports = {
   ...tsjPreset,
-  preset: 'react-native',
+  preset: '@testing-library/react-native',
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   transform: {
     ...tsjPreset.transform,

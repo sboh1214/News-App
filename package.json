@@ -1,6 +1,6 @@
 {
   "name": "news-app",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.9",
+    "@react-native-firebase/app": "^6.7.1",
     "@react-navigation/bottom-tabs": "^5.2.6",
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",

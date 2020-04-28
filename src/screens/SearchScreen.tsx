@@ -38,6 +38,11 @@ export default function SearchScreen() {
 
   return (
     <NB.Container>
+      <NB.Header>
+        <NB.Body>
+          <NB.Title>Search News</NB.Title>
+        </NB.Body>
+      </NB.Header>
       <NB.Content>
         <SearchBox
           onEnter={onEnter}
