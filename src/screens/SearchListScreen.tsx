@@ -4,6 +4,7 @@ import {Bar} from 'react-native-progress';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
 import {StyleSheet} from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 
 type FeedScreenProps = {
   text: string;
@@ -28,6 +29,9 @@ export default function FeedScreen({text}: FeedScreenProps) {
 
   function searchNews() {
     setIsLoading(true);
+    analytics().logEvent('search', {
+      query: searchString,
+    });
     searchNewsByNaver(searchString ?? '')
       .then((result) => {
         setResultList(result);

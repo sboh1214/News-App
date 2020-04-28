@@ -8,6 +8,8 @@ import FollowingScreen from 'screens/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
 import React from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
+import SettingsScreen from 'screens/SettingsScreen';
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +19,7 @@ function TabScreen() {
       <Tab.Screen name="Feed" component={FeedScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Following" component={FollowingScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 }
@@ -24,6 +27,10 @@ function TabScreen() {
 const Stack = createStackNavigator();
 
 export default function NewsApp() {
+  GoogleSignin.configure({
+    webClientId:
+      '74031474846-hpnonovcn67k9bs6bu8gr2bvglg5847b.apps.googleusercontent.com',
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator
