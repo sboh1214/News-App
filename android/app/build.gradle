@@ -133,8 +133,9 @@ android {
         applicationId "com.sboh1214.newsapp.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "0.3.0"
+        versionCode 17
+        versionName "0.3.1"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -220,6 +221,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
 
 // Run this once to be able to run the application with BUCK
