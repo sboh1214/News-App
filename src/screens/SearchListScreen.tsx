@@ -5,6 +5,8 @@ import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
 import {StyleSheet} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 type FeedScreenProps = {
   text: string;
@@ -32,6 +34,20 @@ export default function FeedScreen({text}: FeedScreenProps) {
     analytics().logEvent('search', {
       query: searchString,
     });
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser?.uid)
+      .collection('searchHistories')
+      .add({
+        query: searchString,
+        date: firestore.Timestamp.now(),
+      })
+      .then(() => {
+        console.log('success');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     searchNewsByNaver(searchString ?? '')
       .then((result) => {
         setResultList(result);

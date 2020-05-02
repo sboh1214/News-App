@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "74031474846-lfh31d4sa41dtr595bihu46mepjkgal4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sboh1214.newsapp.android",
+            "certificate_hash": "6c2972743e2c35973f8d4f02130bf63ad7b385c0"
+          }
+        },
+        {
+          "client_id": "74031474846-mmteds7krvhs6f538g1es8rh5m61ga5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sboh1214.newsapp.android",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "74031474846-d18d10o8bfhlq493u0ovbbn397evqslr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +54,13 @@
             {
               "client_id": "74031474846-hpnonovcn67k9bs6bu8gr2bvglg5847b.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "74031474846-hd51hinfstb4qra13d1j1188i50ma587.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sboh1214.newsapp.ios"
+              }
             }
           ]
         }

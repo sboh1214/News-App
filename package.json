@@ -1,6 +1,6 @@
 {
   "name": "news-app",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -21,6 +21,7 @@
     "@react-native-firebase/analytics": "^6.7.1",
     "@react-native-firebase/app": "^6.7.1",
     "@react-native-firebase/auth": "^6.7.1",
+    "@react-native-firebase/firestore": "^6.7.1",
     "@react-native-firebase/perf": "^6.7.2",
     "@react-navigation/bottom-tabs": "^5.2.6",
     "@react-navigation/native": "^5.1.5",
@@ -36,8 +37,7 @@
     "react-native-reanimated": "^1.8.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
-    "react-native-vector-icons": "^6.6.0",
-    "realm": "^5.0.3"
+    "react-native-vector-icons": "^6.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

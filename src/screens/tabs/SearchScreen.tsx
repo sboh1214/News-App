@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import Realm from 'realm';
 import * as NB from 'native-base';
 import SearchBox from 'components/SearchBox';
 import {useNavigation} from '@react-navigation/native';
-import {SearchHistorySchema, SearchHistory} from 'utils/realm';
 import {StyleSheet} from 'react-native';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const styles = StyleSheet.create({
   listItem: {
@@ -15,24 +17,26 @@ const styles = StyleSheet.create({
 export default function SearchScreen() {
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState<String>('');
-  const [realm, setRealm] = useState<Realm | null>(null);
+  const [histories, setHistories] = useState<
+    FirebaseFirestoreTypes.QueryDocumentSnapshot[]
+  >();
 
   useEffect(() => {
-    Realm.open({
-      schema: [SearchHistorySchema],
-    }).then((result: any) => {
-      setRealm(result);
-    });
-    return () => {};
-  }, [realm]);
+    const subscriber = firestore()
+      .collection('users')
+      .doc(auth().currentUser?.uid)
+      .collection('searchHistories')
+      .onSnapshot((snapshot) => {
+        if (snapshot) {
+          setHistories(snapshot.docs);
+        }
+      });
+
+    // Stop listening for updates when no longer required
+    return () => subscriber();
+  });
 
   const onEnter = () => {
-    realm?.write(() => {
-      realm.create('Search History', {
-        query: searchText,
-        date: new Date(),
-      });
-    });
     navigation.navigate('Search List', {text: searchText});
   };
 
@@ -52,16 +56,14 @@ export default function SearchScreen() {
         />
         <NB.Text>Search History</NB.Text>
         <NB.List>
-          {realm
-            ?.objects<SearchHistory>('Search History')
-            .map((item, index) => {
-              return (
-                <NB.ListItem key={index} style={styles.listItem}>
-                  <NB.Text>{item.query}</NB.Text>
-                  <NB.Text>{item.date.toString().slice(10)}</NB.Text>
-                </NB.ListItem>
-              );
-            })}
+          {histories?.map((item, index) => {
+            return (
+              <NB.ListItem key={index} style={styles.listItem}>
+                <NB.Text>{item.data().query}</NB.Text>
+                <NB.Text>{item.data().date.toString().slice(10)}</NB.Text>
+              </NB.ListItem>
+            );
+          })}
         </NB.List>
       </NB.Content>
     </NB.Container>
