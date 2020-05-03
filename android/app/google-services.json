@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "74031474846-ont1rsmgq2iq7u3acpgtseesbgfe3j5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sboh1214.newsapp.android",
+            "certificate_hash": "7fab9f477b0cf504df6ad48de16d2a81333b42e3"
+          }
+        },
+        {
           "client_id": "74031474846-lfh31d4sa41dtr595bihu46mepjkgal4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
