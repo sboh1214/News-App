@@ -7,6 +7,7 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import {formatRelative} from 'date-fns';
 
 const styles = StyleSheet.create({
   listItem: {
@@ -60,7 +61,9 @@ export default function SearchScreen() {
             return (
               <NB.ListItem key={index} style={styles.listItem}>
                 <NB.Text>{item.data().query}</NB.Text>
-                <NB.Text>{item.data().date.toString().slice(10)}</NB.Text>
+                <NB.Text>
+                  {formatRelative(item.data().date.toDate(), new Date())}
+                </NB.Text>
               </NB.ListItem>
             );
           })}
