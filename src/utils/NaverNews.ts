@@ -19,7 +19,11 @@ export function searchNewsByNaver(searchString: String): Promise<Array<News>> {
         params: {query: searchString, display: 100, start: 1},
       })
       .then((result) => {
-        resolve(result.data.items);
+        const res = result.data.items.map((element) => {
+          element.title = unescape(element.title);
+          return element;
+        });
+        resolve(res);
       })
       .catch((reason) => {
         reject(reason);
