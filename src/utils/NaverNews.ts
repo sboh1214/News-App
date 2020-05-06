@@ -1,11 +1,12 @@
 import axios from 'axios';
+import {Html5Entities} from 'html-entities';
 
 export type News = {
-  title: String;
-  originallink: String;
-  link: String;
-  description: String;
-  pubDate: String;
+  title: string;
+  originallink: string;
+  link: string;
+  description: string;
+  pubDate: string;
 };
 
 export function searchNewsByNaver(searchString: String): Promise<Array<News>> {
@@ -16,11 +17,13 @@ export function searchNewsByNaver(searchString: String): Promise<Array<News>> {
           'X-Naver-Client-Id': 'bb0gLCc9ccMMm0gyWnc9',
           'X-Naver-Client-Secret': 'pQc36JDPwa',
         },
-        params: {query: searchString, display: 100, start: 1},
+        params: {query: searchString, display: 20, start: 1},
       })
       .then((result) => {
-        const res = result.data.items.map((element) => {
-          element.title = unescape(element.title);
+        const entities = new Html5Entities();
+        const res = result.data.items.map((element: News) => {
+          const elementResult = element;
+          elementResult.title = entities.decode(element.title);
           return element;
         });
         resolve(res);

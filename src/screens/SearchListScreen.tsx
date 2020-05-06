@@ -7,6 +7,7 @@ import {StyleSheet} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import RichTextBox from 'components/RichTextBox';
 
 type FeedScreenProps = {
   text: string;
@@ -74,7 +75,7 @@ export default function FeedScreen({text}: FeedScreenProps) {
               <NB.ListItem key={index} noBorder style={styles.listItem}>
                 <NB.Card key={index} style={styles.card}>
                   <NB.CardItem>
-                    <NB.Text>{item.title}</NB.Text>
+                    <RichTextBox richText={item.title} />
                   </NB.CardItem>
                 </NB.Card>
               </NB.ListItem>
