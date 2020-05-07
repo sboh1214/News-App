@@ -12,6 +12,7 @@ import {formatRelative} from 'date-fns';
 const styles = StyleSheet.create({
   listItem: {
     justifyContent: 'space-between',
+    backgroundColor: 'white',
   },
 });
 
@@ -27,12 +28,12 @@ export default function SearchScreen() {
       .collection('users')
       .doc(auth().currentUser?.uid)
       .collection('searchHistories')
+      .orderBy('date', 'desc')
       .onSnapshot((snapshot) => {
         if (snapshot) {
           setHistories(snapshot.docs);
         }
       });
-
     // Stop listening for updates when no longer required
     return () => subscriber();
   });

@@ -3,7 +3,7 @@ import * as NB from 'native-base';
 import {Bar} from 'react-native-progress';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, RefreshControl} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
 });
 
 export default function FeedScreen({text}: FeedScreenProps) {
-  const [searchString, setSearchString] = useState<String>(text);
+  const [searchString, setSearchString] = useState<string>(text);
   const [resultList, setResultList] = useState<Array<News>>();
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function searchNews() {
     setIsLoading(true);
@@ -43,11 +43,11 @@ export default function FeedScreen({text}: FeedScreenProps) {
         query: searchString,
         date: firestore.Timestamp.now(),
       })
-      .then(() => {
-        console.log('success');
-      })
       .catch((err) => {
-        console.log(err);
+        NB.Toast.show({
+          text: err,
+          type: 'danger',
+        });
       });
     searchNewsByNaver(searchString ?? '')
       .then((result) => {
@@ -61,10 +61,13 @@ export default function FeedScreen({text}: FeedScreenProps) {
 
   return (
     <NB.Container>
-      <NB.Content>
+      <NB.Content
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={searchNews} />
+        }>
         <SearchBox
           onEnter={searchNews}
-          onChangeText={(searchText: String) => {
+          onChangeText={(searchText: string) => {
             setSearchString(searchText);
           }}
         />
@@ -74,8 +77,8 @@ export default function FeedScreen({text}: FeedScreenProps) {
             return (
               <NB.ListItem key={index} noBorder style={styles.listItem}>
                 <NB.Card key={index} style={styles.card}>
-                  <NB.CardItem>
-                    <RichTextBox richText={item.title} />
+                  <NB.CardItem key={index}>
+                    <RichTextBox key={index} richText={item.title} />
                   </NB.CardItem>
                 </NB.Card>
               </NB.ListItem>

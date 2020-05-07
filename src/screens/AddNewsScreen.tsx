@@ -1,7 +1,6 @@
 import React from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import press from 'utils/press';
 
 export default function AddNewsScreen() {
   const navigation = useNavigation();
@@ -23,17 +22,7 @@ export default function AddNewsScreen() {
         <NB.Right />
       </NB.Header>
       <NB.Content>
-        <NB.List>
-          {press?.map((pressItem) => {
-            return pressItem.categories.map((categoryItem) => {
-              return (
-                <NB.ListItem key={categoryItem.rss}>
-                  <NB.Text>{`${pressItem.name} ${categoryItem.name}`}</NB.Text>
-                </NB.ListItem>
-              );
-            });
-          })}
-        </NB.List>
+        <NB.Text>Preparing</NB.Text>
       </NB.Content>
     </NB.Container>
   );
