@@ -12,6 +12,8 @@ import SettingsScreen from 'screens/SettingsScreen';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import AuthContext, {LoginState, signInGoogle, signOut} from 'utils/auth';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {unstable_enableLogBox} from 'react-native';
+import {Root} from 'native-base';
 
 const Tab = createBottomTabNavigator();
 
@@ -54,18 +56,20 @@ export default function NewsApp() {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{state: loginState, user, signInGoogle, signOut}}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="News App" component={TabScreen} />
-          <Stack.Screen name="Search List" component={SearchListScreen} />
-          <Stack.Screen name="Add News" component={AddNewsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <Root>
+      <AuthContext.Provider
+        value={{state: loginState, user, signInGoogle, signOut}}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}>
+            <Stack.Screen name="News App" component={TabScreen} />
+            <Stack.Screen name="Search List" component={SearchListScreen} />
+            <Stack.Screen name="Add News" component={AddNewsScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </Root>
   );
 }

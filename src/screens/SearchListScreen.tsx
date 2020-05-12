@@ -43,9 +43,9 @@ export default function FeedScreen({text}: FeedScreenProps) {
         query: searchString,
         date: firestore.Timestamp.now(),
       })
-      .catch((err) => {
+      .catch(() => {
         NB.Toast.show({
-          text: err,
+          text: 'Error : Unable to save search history',
           type: 'danger',
         });
       });
