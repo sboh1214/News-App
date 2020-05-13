@@ -52,6 +52,22 @@ export default function SearchScreen() {
       });
   };
 
+  const onDelete = async (id: string) => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser?.uid)
+      .collection('searchHistories')
+      .doc(id)
+      .delete()
+      .catch(() => {
+        NB.Toast.show({
+          text: 'Error : Unable to delete search history',
+          type: 'danger',
+        });
+      });
+    onGetAll();
+  };
+
   const onDeleteAll = async () => {
     const collections = await firestore()
       .collection('users')
@@ -76,12 +92,14 @@ export default function SearchScreen() {
           text: 'Deleted all histories',
           type: 'success',
         });
+        onGetAll();
       })
       .catch(() => {
         NB.Toast.show({
           text: 'Error : Unable to delete all histories',
           type: 'danger',
         });
+        onGetAll();
       });
   };
 
@@ -122,7 +140,10 @@ export default function SearchScreen() {
           )}
           renderHiddenItem={(data) => (
             <NB.View>
-              <NB.Button>
+              <NB.Button
+                onPress={() => {
+                  onDelete(data.item.id);
+                }}>
                 <NB.Text>Delete</NB.Text>
               </NB.Button>
             </NB.View>
