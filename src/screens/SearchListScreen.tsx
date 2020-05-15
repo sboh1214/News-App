@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {Bar} from 'react-native-progress';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
@@ -8,10 +8,6 @@ import analytics from '@react-native-firebase/analytics';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import RichTextBox from 'components/RichTextBox';
-
-type FeedScreenProps = {
-  text: string;
-};
 
 const styles = StyleSheet.create({
   loadingBar: {
@@ -25,22 +21,24 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function FeedScreen({text}: FeedScreenProps) {
-  const [searchString, setSearchString] = useState<string>(text);
+export default function FeedScreen({route}) {
+  const [searchString, setSearchString] = useState<string>(
+    route.params.text ?? '',
+  );
   const [resultList, setResultList] = useState<Array<News>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function searchNews() {
+  function searchNews(string: string) {
     setIsLoading(true);
     analytics().logEvent('search', {
-      query: searchString,
+      query: string,
     });
     firestore()
       .collection('users')
       .doc(auth().currentUser?.uid)
       .collection('searchHistories')
       .add({
-        query: searchString,
+        query: string,
         date: firestore.Timestamp.now(),
       })
       .catch(() => {
@@ -49,7 +47,7 @@ export default function FeedScreen({text}: FeedScreenProps) {
           type: 'danger',
         });
       });
-    searchNewsByNaver(searchString ?? '')
+    searchNewsByNaver(string ?? '')
       .then((result) => {
         setResultList(result);
         setIsLoading(false);
@@ -59,26 +57,39 @@ export default function FeedScreen({text}: FeedScreenProps) {
       });
   }
 
+  useEffect(() => {
+    searchNews(searchString);
+  }, [searchString]);
+
   return (
     <NB.Container>
+      <NB.Header>
+        <NB.Body>
+          <NB.Title>Search Result about {searchString}</NB.Title>
+        </NB.Body>
+      </NB.Header>
       <NB.Content
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={searchNews} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => {
+              searchNews(searchString);
+            }}
+          />
         }>
         <SearchBox
-          onEnter={searchNews}
-          onChangeText={(searchText: string) => {
-            setSearchString(searchText);
+          initialText={searchString}
+          onEnter={(newString: string) => {
+            setSearchString(newString);
           }}
         />
-        {isLoading === true && <Bar indeterminate style={styles.loadingBar} />}
         <NB.List>
-          {resultList?.map((item, index) => {
+          {resultList?.map((item) => {
             return (
-              <NB.ListItem key={index} noBorder style={styles.listItem}>
-                <NB.Card key={index} style={styles.card}>
-                  <NB.CardItem key={index}>
-                    <RichTextBox key={index} richText={item.title} />
+              <NB.ListItem key={item.link} noBorder style={styles.listItem}>
+                <NB.Card key={item.link} style={styles.card}>
+                  <NB.CardItem key={item.link}>
+                    <RichTextBox key={item.link} richText={item.title} />
                   </NB.CardItem>
                 </NB.Card>
               </NB.ListItem>

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as NB from 'native-base';
 import {StyleSheet} from 'react-native';
 
 type SearchBoxProps = {
-  onEnter: any;
-  onChangeText: any;
+  initialText: string;
+  onEnter: (searchText: string) => void;
 };
 
 const styles = StyleSheet.create({
@@ -13,21 +13,28 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function SearchBox({onEnter, onChangeText}: SearchBoxProps) {
+export default function SearchBox({initialText, onEnter}: SearchBoxProps) {
+  const [text, setText] = useState<string>(initialText);
+
   return (
     <NB.Item rounded style={styles.container}>
-      <NB.Icon active name="search" />
+      <NB.Icon type="MaterialIcons" name="search" />
       <NB.Input
-        placeholder="Rounded Textbox"
-        onSubmitEditing={onEnter}
-        onChangeText={onChangeText}
+        placeholder="Search News..."
+        onSubmitEditing={() => {
+          onEnter(text);
+        }}
+        onChangeText={(newText) => {
+          setText(newText);
+        }}
+        value={text}
       />
       <NB.Button
         transparent
         onPress={() => {
-          onEnter();
+          setText('');
         }}>
-        <NB.Icon type="AntDesign" name="enter" />
+        <NB.Icon type="MaterialIcons" name="backspace" />
       </NB.Button>
     </NB.Item>
   );

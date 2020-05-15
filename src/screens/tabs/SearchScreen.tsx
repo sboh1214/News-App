@@ -20,12 +20,11 @@ const styles = StyleSheet.create({
 export default function SearchScreen() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [searchText, setSearchText] = useState<String>('');
   const [histories, setHistories] = useState<
     FirebaseFirestoreTypes.QueryDocumentSnapshot[]
   >();
 
-  const onEnter = () => {
+  const onEnter = (searchText: string) => {
     navigation.navigate('Search List', {text: searchText});
   };
 
@@ -118,12 +117,7 @@ export default function SearchScreen() {
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onGetAll} />
         }>
-        <SearchBox
-          onEnter={onEnter}
-          onChangeText={(text: String) => {
-            setSearchText(text);
-          }}
-        />
+        <SearchBox onEnter={onEnter} />
         <NB.Text>Search History</NB.Text>
         <NB.Button onPress={onDeleteAll}>
           <NB.Text>Delete All</NB.Text>
