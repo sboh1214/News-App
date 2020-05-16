@@ -12,12 +12,34 @@ import SettingsScreen from 'screens/tabs/SettingsScreen';
 import {Root} from 'native-base';
 import NewsScreen from 'screens/NewsScreen';
 import {StackParamList} from 'utils/params';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
 
 function TabScreen() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+          if (route.name === 'Feed') {
+            iconName = 'dashboard';
+          } else if (route.name === 'Search') {
+            iconName = 'search';
+          } else if (route.name === 'Following') {
+            iconName = 'format-list-bulleted';
+          } else {
+            iconName = 'settings';
+          }
+
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      }}>
       <Tab.Screen name="Feed" component={FeedScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Following" component={FollowingScreen} />
