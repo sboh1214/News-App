@@ -36,20 +36,38 @@ export default function FeedScreen() {
     analytics().logEvent('search', {
       query: string,
     });
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .collection('searchHistories')
-      .add({
-        query: string,
-        date: firestore.Timestamp.now(),
-      })
-      .catch(() => {
-        NB.Toast.show({
-          text: 'Error : Unable to save search history',
-          type: 'danger',
+    if (route.params?.id) {
+      firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .collection('searchHistories')
+        .doc(route.params?.id)
+        .update({
+          query: string,
+          date: firestore.Timestamp.now(),
+        })
+        .catch(() => {
+          NB.Toast.show({
+            text: 'Error : Unable to update search history',
+            type: 'danger',
+          });
         });
-      });
+    } else {
+      firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .collection('searchHistories')
+        .add({
+          query: string,
+          date: firestore.Timestamp.now(),
+        })
+        .catch(() => {
+          NB.Toast.show({
+            text: 'Error : Unable to save search history',
+            type: 'danger',
+          });
+        });
+    }
     searchNewsByNaver(string ?? '')
       .then((result) => {
         setResultList(result);

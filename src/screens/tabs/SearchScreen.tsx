@@ -125,7 +125,15 @@ export default function SearchScreen() {
         <SwipeListView
           data={histories}
           renderItem={(data) => (
-            <NB.ListItem noIndent style={styles.listItem}>
+            <NB.ListItem
+              noIndent
+              style={styles.listItem}
+              onPress={() => {
+                navigation.navigate('SearchListScreen', {
+                  text: data.item.data().query,
+                  id: data.item.id,
+                });
+              }}>
               <NB.Text>{data.item.data().query}</NB.Text>
               <NB.Text>
                 {formatRelative(data.item.data().date.toDate(), new Date())}
