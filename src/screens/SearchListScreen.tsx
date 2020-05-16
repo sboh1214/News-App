@@ -84,8 +84,8 @@ export default function FeedScreen() {
 
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Left>
+      <NB.Header style={{height: 84}}>
+        <NB.Left style={{flex: 0}}>
           <NB.Button
             transparent
             onPress={() => {
@@ -94,10 +94,14 @@ export default function FeedScreen() {
             <NB.Icon name="arrow-back" />
           </NB.Button>
         </NB.Left>
-        <NB.Body>
-          <NB.Title>Search Result about {searchString}</NB.Title>
+        <NB.Body style={{flex: 1}}>
+          <SearchBox
+            initialText={searchString}
+            onEnter={(newString: string) => {
+              setSearchString(newString);
+            }}
+          />
         </NB.Body>
-        <NB.Right />
       </NB.Header>
       <NB.Content
         refreshControl={
@@ -108,12 +112,6 @@ export default function FeedScreen() {
             }}
           />
         }>
-        <SearchBox
-          initialText={searchString}
-          onEnter={(newString: string) => {
-            setSearchString(newString);
-          }}
-        />
         <NB.List>
           {resultList?.map((item) => {
             return (

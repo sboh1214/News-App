@@ -108,22 +108,28 @@ export default function SearchScreen() {
 
   return (
     <NB.Container>
-      <NB.Header>
+      <NB.Header style={{height: 84}}>
         <NB.Body>
-          <NB.Title>Search News</NB.Title>
+          <SearchBox initialText="" onEnter={onEnter} />
         </NB.Body>
       </NB.Header>
       <NB.Content
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onGetAll} />
         }>
-        <SearchBox initialText="" onEnter={onEnter} />
-        <NB.Text>Search History</NB.Text>
-        <NB.Button onPress={onDeleteAll}>
-          <NB.Text>Delete All</NB.Text>
-        </NB.Button>
         <SwipeListView
           data={histories}
+          style={{flex: 1}}
+          ListHeaderComponent={() => {
+            return (
+              <NB.View>
+                <NB.Text>Search History</NB.Text>
+                <NB.Button onPress={onDeleteAll}>
+                  <NB.Text>Delete All</NB.Text>
+                </NB.Button>
+              </NB.View>
+            );
+          }}
           renderItem={(data) => (
             <NB.ListItem
               noIndent
