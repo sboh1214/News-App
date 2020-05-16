@@ -8,8 +8,10 @@ import FollowingScreen from 'screens/tabs/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
 import React from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
-import SettingsScreen from 'screens/SettingsScreen';
+import SettingsScreen from 'screens/tabs/SettingsScreen';
 import {Root} from 'native-base';
+import NewsScreen from 'screens/NewsScreen';
+import {StackParamList} from 'utils/params';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +26,7 @@ function TabScreen() {
   );
 }
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<StackParamList>();
 
 export default function NewsApp() {
   return (
@@ -34,9 +36,10 @@ export default function NewsApp() {
           screenOptions={{
             headerShown: false,
           }}>
-          <Stack.Screen name="News App" component={TabScreen} />
-          <Stack.Screen name="Search List" component={SearchListScreen} />
-          <Stack.Screen name="Add News" component={AddNewsScreen} />
+          <Stack.Screen name="TabScreen" component={TabScreen} />
+          <Stack.Screen name="SearchListScreen" component={SearchListScreen} />
+          <Stack.Screen name="AddNewsScreen" component={AddNewsScreen} />
+          <Stack.Screen name="NewsScreen" component={NewsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Root>

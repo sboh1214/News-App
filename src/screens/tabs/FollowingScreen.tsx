@@ -6,7 +6,7 @@ export default function FollowingScreen() {
   const navigation = useNavigation();
 
   const onAddClick = () => {
-    navigation.navigate('Add News');
+    navigation.navigate('AddNewsScreen');
   };
 
   return (

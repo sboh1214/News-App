@@ -25,7 +25,7 @@ export default function SearchScreen() {
   >();
 
   const onEnter = (searchText: string) => {
-    navigation.navigate('Search List', {text: searchText});
+    navigation.navigate('SearchListScreen', {text: searchText});
   };
 
   const onGetAll = () => {
@@ -117,7 +117,7 @@ export default function SearchScreen() {
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onGetAll} />
         }>
-        <SearchBox onEnter={onEnter} />
+        <SearchBox initialText="" onEnter={onEnter} />
         <NB.Text>Search History</NB.Text>
         <NB.Button onPress={onDeleteAll}>
           <NB.Text>Delete All</NB.Text>
