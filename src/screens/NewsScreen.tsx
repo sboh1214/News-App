@@ -3,7 +3,7 @@ import * as NB from 'native-base';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {WebView} from 'react-native-webview';
 import {NewsScreenRouteProp} from 'utils/params';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Share} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
 
 const styles = StyleSheet.create({
@@ -17,6 +17,15 @@ export default function NewsScreen() {
   const route = useRoute<NewsScreenRouteProp>();
 
   const [viewMode, setViewMode] = useState<number>();
+
+  const onShare = () => {
+    Share.share({url: route.params.link}).catch(() => {
+      NB.Toast.show({
+        text: 'Error : Unable to share news',
+        type: 'danger',
+      });
+    });
+  };
 
   return (
     <NB.Container>
@@ -39,14 +48,38 @@ export default function NewsScreen() {
         <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
       </NB.Content>
       <NB.Footer>
-        <NB.FooterTab>
+        <NB.FooterTab style={{flex: 1}}>
+          {viewMode === 0 ? (
+            <NB.View style={{flexDirection: 'row'}}>
+              <NB.Button transparent>
+                <NB.Icon name="arrow-back" type="MaterialIcons" />
+              </NB.Button>
+              <NB.Button transparent>
+                <NB.Icon name="arrow-forward" type="MaterialIcons" />
+              </NB.Button>
+            </NB.View>
+          ) : (
+            <NB.View>
+              <NB.Button transparent>
+                <NB.Icon name="arrow-back" />
+              </NB.Button>
+            </NB.View>
+          )}
+        </NB.FooterTab>
+        <NB.FooterTab style={{flex: 1}}>
           <SegmentedControl
+            style={{height: 48, flex: 1}}
             values={['Web', 'Read']}
             selectedIndex={viewMode}
             onChange={(event) => {
               setViewMode(event.nativeEvent.selectedSegmentIndex);
             }}
           />
+        </NB.FooterTab>
+        <NB.FooterTab style={{flex: 1}}>
+          <NB.Button transparent onPress={onShare}>
+            <NB.Icon name="share" />
+          </NB.Button>
         </NB.FooterTab>
       </NB.Footer>
     </NB.Container>

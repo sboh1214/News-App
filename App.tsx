@@ -13,7 +13,7 @@ import {Root} from 'native-base';
 import NewsScreen from 'screens/NewsScreen';
 import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { GoogleSignin } from '@react-native-community/google-signin';
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,7 +53,8 @@ const Stack = createStackNavigator<StackParamList>();
 
 export default function NewsApp() {
   GoogleSignin.configure({
-    webClientId: '74031474846-hpnonovcn67k9bs6bu8gr2bvglg5847b.apps.googleusercontent.com',
+    webClientId:
+      '74031474846-hpnonovcn67k9bs6bu8gr2bvglg5847b.apps.googleusercontent.com',
   });
 
   return (

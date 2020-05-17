@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import * as NB from 'native-base';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 
 type SearchBoxProps = {
   initialText: string;
@@ -10,6 +10,7 @@ type SearchBoxProps = {
 const styles = StyleSheet.create({
   container: {
     margin: 12,
+    backgroundColor: Platform.OS === 'android' ? 'white' : 'transparent',
   },
 });
 
