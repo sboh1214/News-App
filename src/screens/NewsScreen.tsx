@@ -5,6 +5,7 @@ import {WebView} from 'react-native-webview';
 import {NewsScreenRouteProp} from 'utils/params';
 import {StyleSheet, Share} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
+import ReadingView from 'components/ReadingView';
 
 const styles = StyleSheet.create({
   content: {
@@ -16,10 +17,10 @@ export default function NewsScreen() {
   const navigation = useNavigation();
   const route = useRoute<NewsScreenRouteProp>();
 
-  const [viewMode, setViewMode] = useState<number>();
+  const [viewMode, setViewMode] = useState<number>(0);
 
   const onShare = () => {
-    Share.share({url: route.params.link}).catch(() => {
+    Share.share({url: route.params.news.link}).catch(() => {
       NB.Toast.show({
         text: 'Error : Unable to share news',
         type: 'danger',
@@ -45,7 +46,14 @@ export default function NewsScreen() {
         <NB.Right />
       </NB.Header>
       <NB.Content contentContainerStyle={styles.content}>
-        <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
+        {viewMode === 0 ? (
+          <WebView
+            originWhitelist={['*']}
+            source={{uri: route.params.news.link}}
+          />
+        ) : (
+          <ReadingView news={route.params.news} />
+        )}
       </NB.Content>
       <NB.Footer>
         <NB.FooterTab style={{flex: 1}}>

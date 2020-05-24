@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white',
   },
+  header: {
+    height: 84,
+  },
 });
 
 export default function SearchScreen() {
@@ -108,7 +111,7 @@ export default function SearchScreen() {
 
   return (
     <NB.Container>
-      <NB.Header style={{height: 84}}>
+      <NB.Header style={styles.header}>
         <NB.Body>
           <SearchBox initialText="" onEnter={onEnter} />
         </NB.Body>
@@ -119,7 +122,6 @@ export default function SearchScreen() {
         }>
         <SwipeListView
           data={histories}
-          style={{flex: 1}}
           ListHeaderComponent={() => {
             return (
               <NB.View>

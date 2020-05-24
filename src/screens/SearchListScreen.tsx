@@ -115,15 +115,14 @@ export default function FeedScreen() {
         <NB.List>
           {resultList?.map((item) => {
             return (
-              <NB.ListItem
-                key={item.link}
-                noBorder
-                style={styles.listItem}
-                onPress={() => {
-                  navigation.navigate('NewsScreen', {link: item.link});
-                }}>
+              <NB.ListItem key={item.link} noBorder style={styles.listItem}>
                 <NB.Card key={item.link} style={styles.card}>
-                  <NB.CardItem key={item.link}>
+                  <NB.CardItem
+                    key={item.link}
+                    button
+                    onPress={() => {
+                      navigation.navigate('NewsScreen', {news: item});
+                    }}>
                     <RichTextBox key={item.link} richText={item.title} />
                   </NB.CardItem>
                 </NB.Card>
