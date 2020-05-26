@@ -2,6 +2,7 @@ import React from 'react';
 import * as NB from 'native-base';
 import DeviceInfo from 'react-native-device-info';
 import AccountBox from 'components/AccountBox';
+import {Linking} from 'react-native';
 
 export default function SettingsScreen() {
   return (
@@ -26,6 +27,12 @@ export default function SettingsScreen() {
                 Version : {DeviceInfo.getVersion()}(
                 {DeviceInfo.getBuildNumber()})
               </NB.Text>
+            </NB.ListItem>
+            <NB.ListItem
+              onPress={() => {
+                Linking.openURL('mailto:sboh1214@gmail.com');
+              }}>
+              <NB.Text>Email to developer</NB.Text>
             </NB.ListItem>
           </NB.List>
         </NB.Content>
