@@ -15,7 +15,6 @@ export default function ReadingView({news}: ReadingViewProps) {
 
   useEffect(() => {
     RNFetchBlob.fetch('GET', news.link).then((result) => {
-      console.log(result.respInfo);
       const text = iconv.decode(
         Buffer.from(result.base64(), 'base64'),
         'EUC-KR',

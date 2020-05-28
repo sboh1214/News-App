@@ -3,15 +3,10 @@ import * as NB from 'native-base';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {WebView} from 'react-native-webview';
 import {NewsScreenRouteProp} from 'utils/params';
-import {StyleSheet, Share} from 'react-native';
+import {Share} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
 import ReadingView from 'components/ReadingView';
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-  },
-});
+import {newsStyles} from 'utils/styles';
 
 export default function NewsScreen() {
   const navigation = useNavigation();
@@ -45,7 +40,7 @@ export default function NewsScreen() {
         </NB.Body>
         <NB.Right />
       </NB.Header>
-      <NB.Content contentContainerStyle={styles.content}>
+      <NB.Content contentContainerStyle={newsStyles.content}>
         {viewMode === 0 ? (
           <WebView
             originWhitelist={['*']}
@@ -56,9 +51,9 @@ export default function NewsScreen() {
         )}
       </NB.Content>
       <NB.Footer>
-        <NB.FooterTab style={{flex: 1}}>
+        <NB.FooterTab style={newsStyles.footerTab}>
           {viewMode === 0 ? (
-            <NB.View style={{flexDirection: 'row'}}>
+            <NB.View style={newsStyles.footerView}>
               <NB.Button transparent>
                 <NB.Icon name="arrow-back" type="MaterialIcons" />
               </NB.Button>
@@ -74,9 +69,9 @@ export default function NewsScreen() {
             </NB.View>
           )}
         </NB.FooterTab>
-        <NB.FooterTab style={{flex: 1}}>
+        <NB.FooterTab style={newsStyles.footerTab}>
           <SegmentedControl
-            style={{height: 48, flex: 1}}
+            style={newsStyles.footerSegment}
             values={['Web', 'Read']}
             selectedIndex={viewMode}
             onChange={(event) => {
@@ -84,7 +79,7 @@ export default function NewsScreen() {
             }}
           />
         </NB.FooterTab>
-        <NB.FooterTab style={{flex: 1}}>
+        <NB.FooterTab style={newsStyles.footerTab}>
           <NB.Button transparent onPress={onShare}>
             <NB.Icon name="share" />
           </NB.Button>

@@ -1,10 +1,7 @@
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {
-  createBottomTabNavigator,
-  BottomTabBarProps,
-} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FeedScreen from 'screens/tabs/FeedScreen';
 import SearchScreen from 'screens/tabs/SearchScreen';
 import FollowingScreen from 'screens/tabs/FollowingScreen';
@@ -18,13 +15,19 @@ import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
+type TabBarIcon = {
+  focused: boolean;
+  color: string;
+  size: number;
+};
+
 const Tab = createBottomTabNavigator();
 
 function TabScreen() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+        tabBarIcon: ({color, size}: TabBarIcon) => {
           let iconName;
           if (route.name === 'Feed') {
             iconName = 'dashboard';

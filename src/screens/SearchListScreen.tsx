@@ -2,25 +2,14 @@ import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {searchNewsByNaver, News} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
-import {StyleSheet, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import RichTextBox from 'components/RichTextBox';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
-
-const styles = StyleSheet.create({
-  loadingBar: {
-    width: '94%',
-  },
-  listItem: {
-    marginVertical: -12,
-  },
-  card: {
-    flex: 1,
-  },
-});
+import {searchListStyles, headerStyles} from 'utils/styles';
 
 export default function FeedScreen() {
   const navigation = useNavigation();
@@ -31,7 +20,7 @@ export default function FeedScreen() {
   const [resultList, setResultList] = useState<Array<News>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function searchNews(string: string) {
+  const searchNews = (string: string) => {
     setIsLoading(true);
     analytics().logEvent('search', {
       query: string,
@@ -76,7 +65,7 @@ export default function FeedScreen() {
       .catch(() => {
         setIsLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
     searchNews(searchString);
@@ -84,8 +73,8 @@ export default function FeedScreen() {
 
   return (
     <NB.Container>
-      <NB.Header style={{height: 84}}>
-        <NB.Left style={{flex: 0}}>
+      <NB.Header style={searchListStyles.header}>
+        <NB.Left style={headerStyles.left}>
           <NB.Button
             transparent
             onPress={() => {
@@ -94,7 +83,7 @@ export default function FeedScreen() {
             <NB.Icon name="arrow-back" />
           </NB.Button>
         </NB.Left>
-        <NB.Body style={{flex: 1}}>
+        <NB.Body style={headerStyles.body}>
           <SearchBox
             initialText={searchString}
             onEnter={(newString: string) => {
@@ -102,6 +91,7 @@ export default function FeedScreen() {
             }}
           />
         </NB.Body>
+        <NB.Right style={headerStyles.right} />
       </NB.Header>
       <NB.Content
         refreshControl={
@@ -115,8 +105,11 @@ export default function FeedScreen() {
         <NB.List>
           {resultList?.map((item) => {
             return (
-              <NB.ListItem key={item.link} noBorder style={styles.listItem}>
-                <NB.Card key={item.link} style={styles.card}>
+              <NB.ListItem
+                key={item.link}
+                noBorder
+                style={searchListStyles.listItem}>
+                <NB.Card key={item.link} style={searchListStyles.card}>
                   <NB.CardItem
                     key={item.link}
                     button

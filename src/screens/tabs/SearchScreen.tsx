@@ -2,23 +2,14 @@ import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import SearchBox from 'components/SearchBox';
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet, RefreshControl} from 'react-native';
+import {RefreshControl} from 'react-native';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {formatRelative} from 'date-fns';
 import {SwipeListView} from 'react-native-swipe-list-view';
-
-const styles = StyleSheet.create({
-  listItem: {
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-  },
-  header: {
-    height: 84,
-  },
-});
+import {searchStyles} from 'utils/styles';
 
 export default function SearchScreen() {
   const navigation = useNavigation();
@@ -111,7 +102,7 @@ export default function SearchScreen() {
 
   return (
     <NB.Container>
-      <NB.Header style={styles.header}>
+      <NB.Header style={searchStyles.header}>
         <NB.Body>
           <SearchBox initialText="" onEnter={onEnter} />
         </NB.Body>
@@ -135,7 +126,7 @@ export default function SearchScreen() {
           renderItem={(data) => (
             <NB.ListItem
               noIndent
-              style={styles.listItem}
+              style={searchStyles.listItem}
               onPress={() => {
                 navigation.navigate('SearchListScreen', {
                   text: data.item.data().query,
