@@ -61,7 +61,7 @@ export default function AddNewsScreen() {
         <NB.List>
           {rssList?.map((item) => {
             return (
-              <NB.ListItem>
+              <NB.ListItem key={item.id}>
                 <NB.Text>{item.id}</NB.Text>
               </NB.ListItem>
             );
