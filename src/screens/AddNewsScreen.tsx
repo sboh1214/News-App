@@ -1,27 +1,34 @@
 import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import {RefreshControl} from 'react-native';
 
 export default function AddNewsScreen() {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [rssList, setRssList] = useState<
-    FirebaseFirestoreTypes.QueryDocumentSnapshot[]
-  >();
+  const [rssList, setRssList] = useState<Array<any>>([]);
 
   const getAll = () => {
+    const list = [];
     firestore()
-      .collection('rss_list')
+      .collection('presses')
       .get()
       .then((snapshot) => {
         if (snapshot) {
-          setRssList(snapshot.docs);
+          snapshot.docs.forEach((press) => {
+            Object.keys(press.data().rss).forEach((key) => {
+              list.push({
+                pressId: press.id,
+                pressName: press.data().name,
+                rssId: key,
+                rssUrl: press.data().rss[key],
+              });
+            });
+          });
         }
+        setRssList(list);
         setIsLoading(false);
       })
       .catch(() => {
@@ -62,7 +69,9 @@ export default function AddNewsScreen() {
           {rssList?.map((item) => {
             return (
               <NB.ListItem key={item.id}>
-                <NB.Text>{item.id}</NB.Text>
+                <NB.Text>
+                  {item.pressName} {item.rssId}
+                </NB.Text>
               </NB.ListItem>
             );
           })}
