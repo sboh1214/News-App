@@ -6,11 +6,11 @@ import {RefreshControl} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import RichTextBox from 'components/RichTextBox';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
-import {searchListStyles, headerStyles, cardStyles} from 'utils/styles';
+import {searchListStyles, headerStyles} from 'utils/styles';
 import withRoot from 'components/withRoot';
+import NewsCard, {NewsCardStyles} from 'components/NewsCard';
 
 const SearchListScreen = (): JSX.Element => {
   const navigation = useNavigation();
@@ -106,17 +106,17 @@ const SearchListScreen = (): JSX.Element => {
         <NB.List>
           {resultList?.map((item) => {
             return (
-              <NB.ListItem key={item.link} noBorder style={cardStyles.listItem}>
-                <NB.Card key={item.link} style={cardStyles.card}>
-                  <NB.CardItem
-                    key={item.link}
-                    button
-                    onPress={() => {
-                      navigation.navigate('NewsScreen', {news: item});
-                    }}>
-                    <RichTextBox key={item.link} richText={item.title} />
-                  </NB.CardItem>
-                </NB.Card>
+              <NB.ListItem
+                key={item.link}
+                noBorder
+                style={NewsCardStyles.listItem}>
+                <NewsCard
+                  type="Small"
+                  title={item.title}
+                  onPress={() => {
+                    navigation.navigate('NewsScreen', {news: item});
+                  }}
+                />
               </NB.ListItem>
             );
           })}

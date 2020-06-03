@@ -8,7 +8,7 @@ import firestore, {
 import auth from '@react-native-firebase/auth';
 import * as rssParser from 'react-native-rss-parser';
 import {RefreshControl} from 'react-native';
-import {cardStyles} from 'utils/styles';
+import NewsCard, {NewsCardStyles} from 'components/NewsCard';
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
@@ -85,13 +85,12 @@ const FeedScreen = (): JSX.Element => {
           <NB.List>
             {feedList?.map((item: rssParser.FeedItem) => {
               return (
-                <NB.ListItem key={item.id} style={cardStyles.listItem}>
-                  <NB.Card style={cardStyles.card}>
-                    <NB.CardItem style={cardStyles.cardItem}>
-                      <NB.Text>{item.title}</NB.Text>
-                      <NB.Text>{item.description}</NB.Text>
-                    </NB.CardItem>
-                  </NB.Card>
+                <NB.ListItem key={item.id} style={NewsCardStyles.listItem}>
+                  <NewsCard
+                    type="Small"
+                    title={item.title}
+                    onPress={() => {}}
+                  />
                 </NB.ListItem>
               );
             })}
