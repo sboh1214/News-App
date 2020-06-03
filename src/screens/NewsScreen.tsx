@@ -7,8 +7,9 @@ import {Share} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
 import ReadingView from 'components/ReadingView';
 import {newsStyles} from 'utils/styles';
+import withRoot from 'components/withRoot';
 
-export default function NewsScreen() {
+const NewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const route = useRoute<NewsScreenRouteProp>();
 
@@ -40,7 +41,8 @@ export default function NewsScreen() {
         </NB.Body>
         <NB.Right />
       </NB.Header>
-      <NB.Content contentContainerStyle={newsStyles.content}>
+      <NB.Content
+        contentContainerStyle={viewMode === 0 ? newsStyles.content : null}>
         {viewMode === 0 ? (
           <WebView
             originWhitelist={['*']}
@@ -80,11 +82,26 @@ export default function NewsScreen() {
           />
         </NB.FooterTab>
         <NB.FooterTab style={newsStyles.footerTab}>
-          <NB.Button transparent onPress={onShare}>
-            <NB.Icon name="share" />
-          </NB.Button>
+          {viewMode === 0 ? (
+            <NB.View style={newsStyles.footerView}>
+              <NB.Button transparent>
+                <NB.Icon name="arrow-back" type="MaterialIcons" />
+              </NB.Button>
+              <NB.Button transparent onPress={onShare}>
+                <NB.Icon name="share" />
+              </NB.Button>
+            </NB.View>
+          ) : (
+            <NB.View>
+              <NB.Button transparent>
+                <NB.Icon name="arrow-back" />
+              </NB.Button>
+            </NB.View>
+          )}
         </NB.FooterTab>
       </NB.Footer>
     </NB.Container>
   );
-}
+};
+
+export default withRoot(NewsScreen);

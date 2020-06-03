@@ -9,9 +9,10 @@ import auth from '@react-native-firebase/auth';
 import RichTextBox from 'components/RichTextBox';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
-import {searchListStyles, headerStyles} from 'utils/styles';
+import {searchListStyles, headerStyles, cardStyles} from 'utils/styles';
+import withRoot from 'components/withRoot';
 
-export default function FeedScreen() {
+const SearchListScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const route = useRoute<SearchListScreenRouteProp>();
   const [searchString, setSearchString] = useState<string>(
@@ -105,11 +106,8 @@ export default function FeedScreen() {
         <NB.List>
           {resultList?.map((item) => {
             return (
-              <NB.ListItem
-                key={item.link}
-                noBorder
-                style={searchListStyles.listItem}>
-                <NB.Card key={item.link} style={searchListStyles.card}>
+              <NB.ListItem key={item.link} noBorder style={cardStyles.listItem}>
+                <NB.Card key={item.link} style={cardStyles.card}>
                   <NB.CardItem
                     key={item.link}
                     button
@@ -126,4 +124,6 @@ export default function FeedScreen() {
       </NB.Content>
     </NB.Container>
   );
-}
+};
+
+export default withRoot(SearchListScreen);

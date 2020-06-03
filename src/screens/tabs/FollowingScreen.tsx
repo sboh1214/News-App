@@ -1,8 +1,9 @@
 import React from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
+import withRoot from 'components/withRoot';
 
-export default function FollowingScreen() {
+const FollowingScreen = (): JSX.Element => {
   const navigation = useNavigation();
 
   const onAddClick = () => {
@@ -27,7 +28,10 @@ export default function FollowingScreen() {
             <NB.Text>Saved & History</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
-            <NB.Text>Aaron Bennet</NB.Text>
+            <NB.Text>Saved</NB.Text>
+          </NB.ListItem>
+          <NB.ListItem>
+            <NB.Text>History</NB.Text>
           </NB.ListItem>
           <NB.ListItem itemDivider>
             <NB.Text>Reading List</NB.Text>
@@ -45,4 +49,6 @@ export default function FollowingScreen() {
       </NB.Content>
     </NB.Container>
   );
-}
+};
+
+export default withRoot(FollowingScreen);

@@ -10,8 +10,9 @@ import auth from '@react-native-firebase/auth';
 import {formatRelative} from 'date-fns';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
+import withRoot from 'components/withRoot';
 
-export default function SearchScreen() {
+const SearchScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [histories, setHistories] = useState<
@@ -155,4 +156,6 @@ export default function SearchScreen() {
       </NB.Content>
     </NB.Container>
   );
-}
+};
+
+export default withRoot(SearchScreen);

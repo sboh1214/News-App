@@ -9,7 +9,6 @@ import SearchListScreen from 'screens/SearchListScreen';
 import React from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
 import SettingsScreen from 'screens/tabs/SettingsScreen';
-import {Root} from 'native-base';
 import NewsScreen from 'screens/NewsScreen';
 import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -64,18 +63,16 @@ export default function NewsApp() {
   });
 
   return (
-    <Root>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="TabScreen" component={TabScreen} />
-          <Stack.Screen name="SearchListScreen" component={SearchListScreen} />
-          <Stack.Screen name="AddNewsScreen" component={AddNewsScreen} />
-          <Stack.Screen name="NewsScreen" component={NewsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Root>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="TabScreen" component={TabScreen} />
+        <Stack.Screen name="SearchListScreen" component={SearchListScreen} />
+        <Stack.Screen name="AddNewsScreen" component={AddNewsScreen} />
+        <Stack.Screen name="NewsScreen" component={NewsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

@@ -12,6 +12,18 @@ export const headerStyles = StyleSheet.create({
   },
 });
 
+export const cardStyles = StyleSheet.create({
+  listItem: {
+    marginVertical: -12,
+  },
+  card: {
+    flex: 1,
+  },
+  cardItem: {
+    flexDirection: 'column',
+  },
+});
+
 export const searchStyles = StyleSheet.create({
   listItem: {
     justifyContent: 'space-between',
@@ -25,12 +37,6 @@ export const searchStyles = StyleSheet.create({
 export const searchListStyles = StyleSheet.create({
   loadingBar: {
     width: '94%',
-  },
-  listItem: {
-    marginVertical: -12,
-  },
-  card: {
-    flex: 1,
   },
   header: {
     height: 84,

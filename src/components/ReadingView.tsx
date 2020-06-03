@@ -5,10 +5,19 @@ import cheerio from 'react-native-cheerio';
 import iconv from 'iconv-lite';
 import RNFetchBlob from 'rn-fetch-blob';
 import {Buffer} from 'buffer';
+import {StyleSheet} from 'react-native';
 
 type ReadingViewProps = {
   news: News;
 };
+
+const readingViewStyle = StyleSheet.create({
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    margin: 6,
+  },
+});
 
 export default function ReadingView({news}: ReadingViewProps) {
   const [contentList, setContentList] = useState<Array<string>>();
@@ -31,7 +40,7 @@ export default function ReadingView({news}: ReadingViewProps) {
 
   return (
     <NB.View>
-      <NB.Title>{news.title}</NB.Title>
+      <NB.Text style={readingViewStyle.title}>{news.title}</NB.Text>
       {contentList?.map((value) => {
         return <NB.Text>{value}</NB.Text>;
       })}

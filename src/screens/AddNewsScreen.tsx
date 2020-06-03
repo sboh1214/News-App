@@ -3,8 +3,10 @@ import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import {RefreshControl} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import withRoot from 'components/withRoot';
 
-export default function AddNewsScreen() {
+const AddNewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -40,6 +42,39 @@ export default function AddNewsScreen() {
       });
   };
 
+  const onPress = async (pressId: string, rssId: string, rssUrl: string) => {
+    try {
+      const query = await firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .collection('rssList')
+        .where('pressId', '==', pressId)
+        .where('rssId', '==', rssId)
+        .get();
+      if (!query.empty) {
+        NB.Toast.show({
+          text: 'Warning : You already add this rss',
+          type: 'warning',
+        });
+        return;
+      }
+      await firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .collection('rssList')
+        .add({pressId, rssId, rssUrl});
+      NB.Toast.show({
+        text: 'Success : add rss',
+        type: 'success',
+      });
+    } catch (error) {
+      NB.Toast.show({
+        text: 'Error : Cannot connect to server',
+        type: 'danger',
+      });
+    }
+  };
+
   useEffect(() => {
     getAll();
   }, []);
@@ -68,7 +103,12 @@ export default function AddNewsScreen() {
         <NB.List>
           {rssList?.map((item) => {
             return (
-              <NB.ListItem key={item.id}>
+              <NB.ListItem
+                key={item.id}
+                onPress={() => {
+                  onPress(item.pressId, item.rssId, item.rssUrl);
+                  // navigation.goBack();
+                }}>
                 <NB.Text>
                   {item.pressName} {item.rssId}
                 </NB.Text>
@@ -79,4 +119,6 @@ export default function AddNewsScreen() {
       </NB.Content>
     </NB.Container>
   );
-}
+};
+
+export default withRoot(AddNewsScreen);
