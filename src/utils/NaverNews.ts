@@ -1,5 +1,6 @@
-import axios from 'axios';
 import {Html5Entities} from 'html-entities';
+import perf from '@react-native-firebase/perf';
+import auth from '@react-native-firebase/auth';
 
 export type News = {
   title: string;
@@ -9,27 +10,36 @@ export type News = {
   pubDate: string;
 };
 
-export function searchNewsByNaver(searchString: String): Promise<Array<News>> {
-  return new Promise((resolve, reject) => {
-    axios
-      .get('https://openapi.naver.com/v1/search/news', {
-        headers: {
-          'X-Naver-Client-Id': 'bb0gLCc9ccMMm0gyWnc9',
-          'X-Naver-Client-Secret': 'pQc36JDPwa',
-        },
-        params: {query: searchString, display: 20, start: 1},
-      })
-      .then((result) => {
-        const entities = new Html5Entities();
-        const res = result.data.items.map((element: News) => {
-          const elementResult = element;
-          elementResult.title = entities.decode(element.title);
-          return element;
-        });
-        resolve(res);
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
+export async function searchNewsByNaver(
+  searchString: String,
+): Promise<Array<News>> {
+  const url = `https://openapi.naver.com/v1/search/news?query=${searchString}&display=20`;
+
+  const metric = await perf().newHttpMetric(url, 'GET');
+  metric.putAttribute('type', 'Naver News Search');
+  metric.putAttribute('user', auth().currentUser?.uid ?? 'anonymous');
+  await metric.start();
+
+  const res = await fetch(url, {
+    headers: {
+      'X-Naver-Client-Id': 'bb0gLCc9ccMMm0gyWnc9',
+      'X-Naver-Client-Secret': 'pQc36JDPwa',
+    },
   });
+
+  metric.setHttpResponseCode(res.status);
+  metric.setResponseContentType(res.headers.get('Content-Type'));
+  metric.setResponsePayloadSize(
+    parseInt(res.headers.get('Content-Length') ?? '0', 10),
+  );
+  await metric.stop();
+
+  const json = await res.json();
+  const entities = new Html5Entities();
+  const list = json.items.map((element: News) => {
+    const elementResult = element;
+    elementResult.title = entities.decode(element.title);
+    return element;
+  });
+  return list;
 }
