@@ -2,17 +2,17 @@ import {Html5Entities} from 'html-entities';
 import perf from '@react-native-firebase/perf';
 import auth from '@react-native-firebase/auth';
 
-export type News = {
+export type NaverNews = {
   title: string;
-  originallink: string;
+  originallink?: string;
   link: string;
-  description: string;
-  pubDate: string;
+  description?: string;
+  pubDate?: string;
 };
 
 export async function searchNewsByNaver(
   searchString: String,
-): Promise<Array<News>> {
+): Promise<Array<NaverNews>> {
   const url = `https://openapi.naver.com/v1/search/news?query=${searchString}&display=20`;
 
   const metric = await perf().newHttpMetric(url, 'GET');
@@ -36,7 +36,7 @@ export async function searchNewsByNaver(
 
   const json = await res.json();
   const entities = new Html5Entities();
-  const list = json.items.map((element: News) => {
+  const list = json.items.map((element: NaverNews) => {
     const elementResult = element;
     elementResult.title = entities.decode(element.title);
     return element;

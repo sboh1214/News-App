@@ -1,11 +1,16 @@
 import {RouteProp} from '@react-navigation/native';
-import {News} from 'utils/NaverNews';
+
+export type News = {
+  title: string;
+  link: string;
+  originallink?: string;
+};
 
 export type StackParamList = {
   TabScreen: undefined;
   SearchListScreen: {text: string; id: string | undefined} | undefined;
   AddNewsScreen: undefined;
-  NewsScreen: {news: News};
+  NewsScreen: News;
 };
 
 export type NewsScreenRouteProp = RouteProp<StackParamList, 'NewsScreen'>;

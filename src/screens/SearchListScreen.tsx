@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
-import {searchNewsByNaver, News} from 'utils/NaverNews';
+import {searchNewsByNaver, NaverNews} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
 import {RefreshControl} from 'react-native';
 import analytics from '@react-native-firebase/analytics';
@@ -18,7 +18,7 @@ const SearchListScreen = (): JSX.Element => {
   const [searchString, setSearchString] = useState<string>(
     route.params?.text ?? '',
   );
-  const [resultList, setResultList] = useState<Array<News>>();
+  const [resultList, setResultList] = useState<Array<NaverNews>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const searchNews = (string: string) => {
@@ -114,7 +114,10 @@ const SearchListScreen = (): JSX.Element => {
                   type="Small"
                   title={item.title}
                   onPress={() => {
-                    navigation.navigate('NewsScreen', {news: item});
+                    navigation.navigate('NewsScreen', {
+                      title: item.title,
+                      link: item.link,
+                    });
                   }}
                 />
               </NB.ListItem>

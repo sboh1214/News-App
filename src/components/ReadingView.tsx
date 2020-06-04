@@ -1,15 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
-import {News} from 'utils/NaverNews';
 import cheerio from 'react-native-cheerio';
 import iconv from 'iconv-lite';
 import RNFetchBlob from 'rn-fetch-blob';
 import {Buffer} from 'buffer';
 import {StyleSheet} from 'react-native';
-
-type ReadingViewProps = {
-  news: News;
-};
+import {News} from 'utils/params';
 
 const readingViewStyle = StyleSheet.create({
   title: {
@@ -19,11 +15,11 @@ const readingViewStyle = StyleSheet.create({
   },
 });
 
-export default function ReadingView({news}: ReadingViewProps) {
+export default function ReadingView({title, link}: News) {
   const [contentList, setContentList] = useState<Array<string>>();
 
   useEffect(() => {
-    RNFetchBlob.fetch('GET', news.link).then((result) => {
+    RNFetchBlob.fetch('GET', link).then((result) => {
       const text = iconv.decode(
         Buffer.from(result.base64(), 'base64'),
         'EUC-KR',
@@ -36,11 +32,11 @@ export default function ReadingView({news}: ReadingViewProps) {
       });
       setContentList(list);
     });
-  }, [news.link]);
+  }, [link]);
 
   return (
     <NB.View>
-      <NB.Text style={readingViewStyle.title}>{news.title}</NB.Text>
+      <NB.Text style={readingViewStyle.title}>{title}</NB.Text>
       {contentList?.map((value) => {
         return <NB.Text>{value}</NB.Text>;
       })}

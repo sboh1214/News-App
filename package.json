@@ -1,6 +1,6 @@
 {
   "name": "news-app",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -38,7 +38,7 @@
     "react-native-reanimated": "1.9.0",
     "react-native-rss-parser": "1.4.0",
     "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "2.8.0",
+    "react-native-screens": "^2.8.0",
     "react-native-swipe-list-view": "3.1.0",
     "react-native-vector-icons": "6.6.0",
     "react-native-webview": "9.4.0",

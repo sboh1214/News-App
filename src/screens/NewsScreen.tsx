@@ -16,7 +16,7 @@ const NewsScreen = (): JSX.Element => {
   const [viewMode, setViewMode] = useState<number>(0);
 
   const onShare = () => {
-    Share.share({url: route.params.news.link}).catch(() => {
+    Share.share({url: route.params.link}).catch(() => {
       NB.Toast.show({
         text: 'Error : Unable to share news',
         type: 'danger',
@@ -44,12 +44,9 @@ const NewsScreen = (): JSX.Element => {
       <NB.Content
         contentContainerStyle={viewMode === 0 ? newsStyles.content : null}>
         {viewMode === 0 ? (
-          <WebView
-            originWhitelist={['*']}
-            source={{uri: route.params.news.link}}
-          />
+          <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
         ) : (
-          <ReadingView news={route.params.news} />
+          <ReadingView news={route.params} />
         )}
       </NB.Content>
       <NB.Footer>

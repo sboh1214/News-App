@@ -10,6 +10,7 @@ import {fetchUserRssList} from 'utils/fetch';
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [feedList, setFeedList] = useState<rssParser.FeedItem[]>();
   const [rssList, setRssList] = useState<
@@ -85,11 +86,19 @@ const FeedScreen = (): JSX.Element => {
           <NB.List>
             {feedList?.map((item: rssParser.FeedItem) => {
               return (
-                <NB.ListItem key={item.id} style={NewsCardStyles.listItem}>
+                <NB.ListItem
+                  key={item.id}
+                  noBorder
+                  style={NewsCardStyles.listItem}>
                   <NewsCard
                     type="Small"
                     title={item.title}
-                    onPress={() => {}}
+                    onPress={() => {
+                      navigation.navigate('NewsScreen', {
+                        title: item.title,
+                        link: item.links[0].url,
+                      });
+                    }}
                   />
                 </NB.ListItem>
               );
