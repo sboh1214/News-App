@@ -2,32 +2,21 @@ import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import * as rssParser from 'react-native-rss-parser';
 import {RefreshControl} from 'react-native';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
+import {fetchUserRssList} from 'utils/fetch';
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [feedList, setFeedList] = useState<rssParser.FeedItem[]>();
-  let rssList: FirebaseFirestoreTypes.QueryDocumentSnapshot[];
+  const [rssList, setRssList] = useState<
+    FirebaseFirestoreTypes.QueryDocumentSnapshot[]
+  >();
 
-  const onGetRss = async () => {
-    const query = await firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .collection('rssList')
-      .get();
-    rssList = query.docs;
-    setIsEmpty(query.empty);
-  };
-
-  const onGetFeed = async () => {
+  const fetchFeed = async () => {
     const list = await rssList?.map(async (rssItem) => {
       const res = await fetch(rssItem.data().rssUrl);
       const data = await res.text();
@@ -37,22 +26,25 @@ const FeedScreen = (): JSX.Element => {
     const finalList = await list?.reduce(async (acc, cur) => {
       return (await acc).concat(await cur);
     });
-    setFeedList(finalList?.slice(0, 20) ?? []);
-  };
-
-  const onGet = () => {
-    onGetRss().then(() => {
-      if (!isEmpty) {
-        onGetFeed().then(() => {
-          setIsLoading(false);
-        });
-      }
-    });
+    return finalList;
   };
 
   useEffect(() => {
-    onGet();
-  }, []);
+    fetchUserRssList().then((docs) => {
+      setRssList(docs);
+    });
+  }, [isLoading]);
+
+  useEffect(() => {
+    fetchFeed()
+      .then((res) => {
+        setFeedList(res?.slice(0, 20));
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  }, [rssList]);
 
   const onAddClick = () => {
     navigation.navigate('AddNewsScreen');
@@ -72,12 +64,20 @@ const FeedScreen = (): JSX.Element => {
       </NB.Header>
       <NB.Content
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={onGet} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => {
+              setIsLoading(true);
+            }}
+          />
         }>
-        {isEmpty ? (
+        {feedList === undefined ? (
           <NB.View>
             <NB.Text>There is no feed.</NB.Text>
-            <NB.Button>
+            <NB.Button
+              onPress={() => {
+                navigation.navigate('AddNewsScreen');
+              }}>
               <NB.Text>Go to add feed</NB.Text>
             </NB.Button>
           </NB.View>

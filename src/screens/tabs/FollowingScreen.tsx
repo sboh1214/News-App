@@ -1,14 +1,31 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import {fetchUserRssList, deleteUserRss} from 'utils/fetch';
+import {RefreshControl} from 'react-native';
+import {SwipeListView} from 'react-native-swipe-list-view';
+import {searchStyles} from 'utils/styles';
 
 const FollowingScreen = (): JSX.Element => {
   const navigation = useNavigation();
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [rssList, setRssList] = useState<
+    FirebaseFirestoreTypes.QueryDocumentSnapshot[]
+  >();
+
   const onAddClick = () => {
     navigation.navigate('AddNewsScreen');
   };
+
+  useEffect(() => {
+    fetchUserRssList().then((docs) => {
+      setRssList(docs);
+      setIsLoading(false);
+    });
+  }, [isLoading]);
 
   return (
     <NB.Container>
@@ -22,7 +39,7 @@ const FollowingScreen = (): JSX.Element => {
           </NB.Button>
         </NB.Right>
       </NB.Header>
-      <NB.Content>
+      <NB.Content refreshControl={<RefreshControl refreshing={isLoading} />}>
         <NB.List>
           <NB.ListItem itemDivider>
             <NB.Text>Saved & History</NB.Text>
@@ -34,18 +51,47 @@ const FollowingScreen = (): JSX.Element => {
             <NB.Text>History</NB.Text>
           </NB.ListItem>
           <NB.ListItem itemDivider>
-            <NB.Text>Reading List</NB.Text>
+            <NB.Text>Leading List</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
-            <NB.Text>Ali Connors</NB.Text>
-          </NB.ListItem>
-          <NB.ListItem itemDivider>
-            <NB.Text>RSS Feed</NB.Text>
-          </NB.ListItem>
-          <NB.ListItem>
-            <NB.Text>Bradley Horowitz</NB.Text>
+            <NB.Text>Please wait</NB.Text>
           </NB.ListItem>
         </NB.List>
+        <SwipeListView
+          data={rssList}
+          ListHeaderComponent={() => {
+            return (
+              <NB.View>
+                <NB.Text>Feed (RSS)</NB.Text>
+              </NB.View>
+            );
+          }}
+          renderItem={(data) => (
+            <NB.ListItem
+              key={data.item.id}
+              style={searchStyles.listItem}
+              noIndent>
+              <NB.Text>
+                {data.item.data().pressId} {data.item.data().rssId}
+              </NB.Text>
+            </NB.ListItem>
+          )}
+          renderHiddenItem={(data) => (
+            <NB.View>
+              <NB.Button
+                onPress={() => {
+                  deleteUserRss(data.item.id);
+                  fetchUserRssList().then((docs) => {
+                    setRssList(docs);
+                  });
+                }}>
+                <NB.Text>Delete</NB.Text>
+              </NB.Button>
+            </NB.View>
+          )}
+          leftOpenValue={75}
+          rightOpenValue={-75}
+        />
       </NB.Content>
     </NB.Container>
   );
