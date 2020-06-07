@@ -1,18 +1,23 @@
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FeedScreen from 'screens/tabs/FeedScreen';
 import SearchScreen from 'screens/tabs/SearchScreen';
 import FollowingScreen from 'screens/tabs/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
 import SettingsScreen from 'screens/tabs/SettingsScreen';
 import NewsScreen from 'screens/NewsScreen';
 import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GoogleSignin} from '@react-native-community/google-signin';
+import {Appearance} from 'react-native';
 
 type TabBarIcon = {
   focused: boolean;
@@ -62,8 +67,16 @@ export default function NewsApp() {
       '74031474846-hpnonovcn67k9bs6bu8gr2bvglg5847b.apps.googleusercontent.com',
   });
 
+  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+  useEffect(() => {
+    setIsDarkTheme(Appearance.getColorScheme() === 'dark');
+    Appearance.addChangeListener((theme) => {
+      setIsDarkTheme(theme.colorScheme === 'dark');
+    });
+  }, []);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={isDarkTheme ? DarkTheme : DefaultTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
