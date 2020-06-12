@@ -46,7 +46,7 @@ const NewsScreen = (): JSX.Element => {
         {viewMode === 0 ? (
           <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
         ) : (
-          <ReadingView news={route.params} />
+          <ReadingView title={route.params.title} link={route.params.link} />
         )}
       </NB.Content>
       <NB.Footer>

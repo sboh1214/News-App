@@ -21,6 +21,7 @@ export default function SearchBox({initialText, onEnter}: SearchBoxProps) {
     <NB.Item rounded style={styles.container}>
       <NB.Icon type="MaterialIcons" name="search" />
       <NB.Input
+        testID="input"
         placeholder="Search News..."
         onSubmitEditing={() => {
           onEnter(text);

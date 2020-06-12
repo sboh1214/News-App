@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import cheerio from 'react-native-cheerio';
-import iconv from 'iconv-lite';
-import RNFetchBlob from 'rn-fetch-blob';
-import {Buffer} from 'buffer';
 import {StyleSheet} from 'react-native';
-import {News} from 'utils/params';
+
+type ReadingViewProps = {
+  title: string;
+  link: string;
+};
 
 const readingViewStyle = StyleSheet.create({
   title: {
@@ -15,23 +16,30 @@ const readingViewStyle = StyleSheet.create({
   },
 });
 
-export default function ReadingView({title, link}: News) {
+export default function ReadingView({title, link}: ReadingViewProps) {
   const [contentList, setContentList] = useState<Array<string>>();
 
   useEffect(() => {
-    RNFetchBlob.fetch('GET', link).then((result) => {
-      const text = iconv.decode(
-        Buffer.from(result.base64(), 'base64'),
-        'EUC-KR',
-      );
-      const doc = cheerio.load(text);
-      const contents = doc('#articleBodyContents');
-      const list: Array<string> = [];
-      contents.each((index: number, element: CheerioElement) => {
-        list.push(doc(element).text());
-      });
-      setContentList(list);
-    });
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = (e) => {
+      if (request.readyState !== 4) {
+        return;
+      }
+      if (request.status === 200) {
+        console.log('success', request.response);
+        const doc = cheerio.load(request.response);
+        const contents = doc('#articleBodyContents');
+        const list: Array<string> = [];
+        contents.each((index: number, element: CheerioElement) => {
+          list.push(doc(element).text());
+        });
+        setContentList(list);
+      } else {
+        console.warn('error');
+      }
+    };
+    request.open('GET', link);
+    request.send();
   }, [link]);
 
   return (
