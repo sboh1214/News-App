@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import {RefreshControl} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import withRoot from 'components/withRoot';
+import {fetchAllRssList} from 'utils/fetch';
 
 const AddNewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
@@ -13,23 +14,8 @@ const AddNewsScreen = (): JSX.Element => {
   const [rssList, setRssList] = useState<Array<any>>([]);
 
   const getAll = () => {
-    const list = [];
-    firestore()
-      .collection('presses')
-      .get()
-      .then((snapshot) => {
-        if (snapshot) {
-          snapshot.docs.forEach((press) => {
-            Object.keys(press.data().rss).forEach((key) => {
-              list.push({
-                pressId: press.id,
-                pressName: press.data().name,
-                rssId: key,
-                rssUrl: press.data().rss[key],
-              });
-            });
-          });
-        }
+    fetchAllRssList()
+      .then((list) => {
         setRssList(list);
         setIsLoading(false);
       })
@@ -92,7 +78,7 @@ const AddNewsScreen = (): JSX.Element => {
           </NB.Button>
         </NB.Left>
         <NB.Body>
-          <NB.Title>Add News</NB.Title>
+          <NB.Title testID="title">Add News</NB.Title>
         </NB.Body>
         <NB.Right />
       </NB.Header>

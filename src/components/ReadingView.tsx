@@ -26,7 +26,6 @@ export default function ReadingView({title, link}: ReadingViewProps) {
         return;
       }
       if (request.status === 200) {
-        console.log('success', request.response);
         const doc = cheerio.load(request.response);
         const contents = doc('#articleBodyContents');
         const list: Array<string> = [];
@@ -34,8 +33,6 @@ export default function ReadingView({title, link}: ReadingViewProps) {
           list.push(doc(element).text());
         });
         setContentList(list);
-      } else {
-        console.warn('error');
       }
     };
     request.open('GET', link);

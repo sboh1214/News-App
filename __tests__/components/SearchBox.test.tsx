@@ -6,7 +6,7 @@ jest.useFakeTimers();
 
 test('SearchBox', async () => {
   const initialText = 'Test';
-  const {getByTestId, getByText, queryByTestId, baseElement} = render(
+  const {getByTestId} = render(
     <SearchBox initialText={initialText} onEnter={() => {}} />,
   );
 

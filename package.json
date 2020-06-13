@@ -1,6 +1,6 @@
 {
   "name": "news-app",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -14,18 +14,18 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run version"
+      "pre-commit": ""
     }
   },
   "dependencies": {
     "@react-native-community/google-signin": "4.0.3",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/segmented-control": "1.6.1",
-    "@react-native-firebase/analytics": "6.7.2",
-    "@react-native-firebase/app": "6.7.1",
-    "@react-native-firebase/auth": "6.7.1",
-    "@react-native-firebase/firestore": "6.7.1",
-    "@react-native-firebase/perf": "6.7.3",
+    "@react-native-firebase/analytics": "7.1.4",
+    "@react-native-firebase/app": "7.2.1",
+    "@react-native-firebase/auth": "8.0.5",
+    "@react-native-firebase/firestore": "7.1.7",
+    "@react-native-firebase/perf": "7.1.4",
     "@react-navigation/bottom-tabs": "5.5.0",
     "@react-navigation/native": "5.4.3",
     "@react-navigation/stack": "5.4.0",
@@ -71,7 +71,7 @@
     "jest": "25.5.4",
     "metro-react-native-babel-preset": "0.58.0",
     "prettier": "2.0.5",
-    "react-native-version": "4.0.0",
+    "react-native-version": "^4.0.0",
     "react-test-renderer": "^16.13.1",
     "typescript": "3.9.3"
   }
