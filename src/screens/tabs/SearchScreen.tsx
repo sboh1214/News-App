@@ -11,9 +11,14 @@ import {formatRelative} from 'date-fns';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
 import withRoot from 'components/withRoot';
+import {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const SearchScreen = (): JSX.Element => {
   const navigation = useNavigation();
+
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [histories, setHistories] = useState<
     FirebaseFirestoreTypes.QueryDocumentSnapshot[]
@@ -103,57 +108,56 @@ const SearchScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header style={searchStyles.header}>
+      <NB.Header style={{...headerStyles.header, height: 84}}>
         <NB.Body>
           <SearchBox initialText="" onEnter={onEnter} />
         </NB.Body>
       </NB.Header>
-      <NB.Content
+      <SwipeListView
+        style={contentStyles.content}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onGetAll} />
-        }>
-        <SwipeListView
-          data={histories}
-          ListHeaderComponent={() => {
-            return (
-              <NB.View>
-                <NB.Text>Search History</NB.Text>
-                <NB.Button onPress={onDeleteAll}>
-                  <NB.Text>Delete All</NB.Text>
-                </NB.Button>
-              </NB.View>
-            );
-          }}
-          renderItem={(data) => (
-            <NB.ListItem
-              noIndent
-              style={searchStyles.listItem}
-              onPress={() => {
-                navigation.navigate('SearchListScreen', {
-                  text: data.item.data().query,
-                  id: data.item.id,
-                });
-              }}>
-              <NB.Text>{data.item.data().query}</NB.Text>
-              <NB.Text>
-                {formatRelative(data.item.data().date.toDate(), new Date())}
-              </NB.Text>
-            </NB.ListItem>
-          )}
-          renderHiddenItem={(data) => (
+        }
+        data={histories}
+        ListHeaderComponent={() => {
+          return (
             <NB.View>
-              <NB.Button
-                onPress={() => {
-                  onDelete(data.item.id);
-                }}>
-                <NB.Text>Delete</NB.Text>
+              <NB.Text>Search History</NB.Text>
+              <NB.Button onPress={onDeleteAll}>
+                <NB.Text>Delete All</NB.Text>
               </NB.Button>
             </NB.View>
-          )}
-          leftOpenValue={75}
-          rightOpenValue={-75}
-        />
-      </NB.Content>
+          );
+        }}
+        renderItem={(data) => (
+          <NB.ListItem
+            noIndent
+            style={searchStyles.listItem}
+            onPress={() => {
+              navigation.navigate('SearchListScreen', {
+                text: data.item.data().query,
+                id: data.item.id,
+              });
+            }}>
+            <NB.Text>{data.item.data().query}</NB.Text>
+            <NB.Text>
+              {formatRelative(data.item.data().date.toDate(), new Date())}
+            </NB.Text>
+          </NB.ListItem>
+        )}
+        renderHiddenItem={(data) => (
+          <NB.View>
+            <NB.Button
+              onPress={() => {
+                onDelete(data.item.id);
+              }}>
+              <NB.Text>Delete</NB.Text>
+            </NB.Button>
+          </NB.View>
+        )}
+        leftOpenValue={75}
+        rightOpenValue={-75}
+      />
     </NB.Container>
   );
 };

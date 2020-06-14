@@ -1,10 +1,5 @@
 import 'react-native-gesture-handler';
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FeedScreen from 'screens/tabs/FeedScreen';
 import SearchScreen from 'screens/tabs/SearchScreen';
@@ -18,6 +13,8 @@ import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {Appearance} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {DarkTheme, LightTheme} from 'utils/theme';
 
 type TabBarIcon = {
   focused: boolean;
@@ -76,7 +73,7 @@ export default function NewsApp() {
   }, []);
 
   return (
-    <NavigationContainer theme={isDarkTheme ? DarkTheme : DefaultTheme}>
+    <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,

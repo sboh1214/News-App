@@ -7,9 +7,14 @@ import withRoot from 'components/withRoot';
 import SegmentedControl from '@react-native-community/segmented-control';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const SettingsScreen = (): JSX.Element => {
   const [themeMode, setThemeMode] = useState<number>(0);
+
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
+  const appTheme = useAppTheme();
 
   const fetchThemeMode = async () => {
     const mode = await firestore()
@@ -25,12 +30,12 @@ const SettingsScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Body>
-          <NB.Title>Account & Settings</NB.Title>
+      <NB.Header style={headerStyles.header}>
+        <NB.Body style={headerStyles.body}>
+          <NB.Title style={headerStyles.bodyText}>Account & Settings</NB.Title>
         </NB.Body>
       </NB.Header>
-      <NB.Content>
+      <NB.Content style={contentStyles.content}>
         <NB.List>
           <NB.ListItem itemDivider>
             <NB.Text>Account</NB.Text>
@@ -53,7 +58,7 @@ const SettingsScreen = (): JSX.Element => {
             <NB.Text>About</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
-            <NB.Text>
+            <NB.Text style={{color: appTheme.text}}>
               Version : {DeviceInfo.getVersion()}({DeviceInfo.getBuildNumber()})
             </NB.Text>
           </NB.ListItem>
@@ -61,7 +66,7 @@ const SettingsScreen = (): JSX.Element => {
             onPress={() => {
               Linking.openURL('mailto:sboh1214@gmail.com');
             }}>
-            <NB.Text>Email to developer</NB.Text>
+            <NB.Text style={{color: appTheme.text}}>Email to developer</NB.Text>
           </NB.ListItem>
         </NB.List>
       </NB.Content>

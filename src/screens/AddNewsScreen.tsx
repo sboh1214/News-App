@@ -6,9 +6,13 @@ import {RefreshControl} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import withRoot from 'components/withRoot';
 import {fetchAllRssList} from 'utils/fetch';
+import {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const AddNewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
+
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rssList, setRssList] = useState<Array<any>>([]);
@@ -67,8 +71,8 @@ const AddNewsScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Left>
+      <NB.Header style={headerStyles.header}>
+        <NB.Left style={headerStyles.left}>
           <NB.Button
             transparent
             onPress={() => {
@@ -77,12 +81,15 @@ const AddNewsScreen = (): JSX.Element => {
             <NB.Icon name="arrow-back" />
           </NB.Button>
         </NB.Left>
-        <NB.Body>
-          <NB.Title testID="title">Add News</NB.Title>
+        <NB.Body style={headerStyles.body}>
+          <NB.Title style={headerStyles.bodyText} testID="title">
+            Add News
+          </NB.Title>
         </NB.Body>
-        <NB.Right />
+        <NB.Right style={headerStyles.right} />
       </NB.Header>
       <NB.Content
+        style={contentStyles.content}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={getAll} />
         }>

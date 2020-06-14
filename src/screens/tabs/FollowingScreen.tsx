@@ -7,9 +7,13 @@ import {fetchUserRssList, deleteUserRss} from 'utils/fetch';
 import {RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
+import {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const FollowingScreen = (): JSX.Element => {
   const navigation = useNavigation();
+
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rssList, setRssList] = useState<
@@ -29,34 +33,35 @@ const FollowingScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Body>
-          <NB.Title>Following</NB.Title>
+      <NB.Header style={headerStyles.header}>
+        <NB.Left style={headerStyles.left} />
+        <NB.Body style={headerStyles.body}>
+          <NB.Title style={headerStyles.bodyText}>Following</NB.Title>
         </NB.Body>
-        <NB.Right>
+        <NB.Right style={headerStyles.right}>
           <NB.Button transparent onPress={onAddClick}>
             <NB.Icon name="add" />
           </NB.Button>
         </NB.Right>
       </NB.Header>
-      <NB.Content refreshControl={<RefreshControl refreshing={isLoading} />}>
-        <NB.List>
-          <NB.ListItem itemDivider>
-            <NB.Text>Saved & History</NB.Text>
-          </NB.ListItem>
-          <NB.ListItem>
-            <NB.Text>Saved</NB.Text>
-          </NB.ListItem>
-          <NB.ListItem>
-            <NB.Text>History</NB.Text>
-          </NB.ListItem>
-          <NB.ListItem itemDivider>
-            <NB.Text>Leading List</NB.Text>
-          </NB.ListItem>
-          <NB.ListItem>
-            <NB.Text>Please wait</NB.Text>
-          </NB.ListItem>
-        </NB.List>
+      <NB.Content
+        style={contentStyles.content}
+        refreshControl={<RefreshControl refreshing={isLoading} />}>
+        <NB.ListItem itemDivider>
+          <NB.Text>Saved & History</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem>
+          <NB.Text>Saved</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem>
+          <NB.Text>History</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem itemDivider>
+          <NB.Text>Leading List</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem>
+          <NB.Text>Please wait</NB.Text>
+        </NB.ListItem>
         <SwipeListView
           data={rssList}
           ListHeaderComponent={() => {

@@ -7,9 +7,17 @@ import * as rssParser from 'react-native-rss-parser';
 import {RefreshControl} from 'react-native';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
 import {fetchUserRssList} from 'utils/fetch';
+import {
+  useHeaderStyles,
+  useContentStyles,
+  useNewsCardStyles,
+} from 'utils/theme';
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
+  const newsCardStyles = useNewsCardStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [feedList, setFeedList] = useState<rssParser.FeedItem[]>();
@@ -53,17 +61,19 @@ const FeedScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Body>
-          <NB.Title>Feed</NB.Title>
+      <NB.Header style={headerStyles.header}>
+        <NB.Left style={headerStyles.left} />
+        <NB.Body style={headerStyles.body}>
+          <NB.Title style={headerStyles.bodyText}>Feed</NB.Title>
         </NB.Body>
-        <NB.Right>
+        <NB.Right style={headerStyles.right}>
           <NB.Button transparent onPress={onAddClick}>
             <NB.Icon name="add" />
           </NB.Button>
         </NB.Right>
       </NB.Header>
       <NB.Content
+        style={contentStyles.content}
         refreshControl={
           <RefreshControl
             refreshing={isLoading}
@@ -87,10 +97,11 @@ const FeedScreen = (): JSX.Element => {
             {feedList?.map((item: rssParser.FeedItem) => {
               return (
                 <NB.ListItem
-                  key={item.id}
+                  key={item.title}
                   noBorder
                   style={NewsCardStyles.listItem}>
                   <NewsCard
+                    style={newsCardStyles.newsCard}
                     type="Small"
                     title={item.title}
                     onPress={() => {

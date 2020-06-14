@@ -8,13 +8,17 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
-import {searchListStyles, headerStyles} from 'utils/styles';
 import withRoot from 'components/withRoot';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
+import {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const SearchListScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const route = useRoute<SearchListScreenRouteProp>();
+
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
+
   const [searchString, setSearchString] = useState<string>(
     route.params?.text ?? '',
   );
@@ -74,7 +78,7 @@ const SearchListScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header style={searchListStyles.header}>
+      <NB.Header style={{...headerStyles.header, height: 84}}>
         <NB.Left style={headerStyles.left}>
           <NB.Button
             transparent
@@ -95,6 +99,7 @@ const SearchListScreen = (): JSX.Element => {
         <NB.Right style={headerStyles.right} />
       </NB.Header>
       <NB.Content
+        style={contentStyles.content}
         refreshControl={
           <RefreshControl
             refreshing={isLoading}

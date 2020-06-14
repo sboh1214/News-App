@@ -6,12 +6,16 @@ import {NewsScreenRouteProp} from 'utils/params';
 import {Share} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
 import ReadingView from 'components/ReadingView';
-import {newsStyles} from 'utils/styles';
 import withRoot from 'components/withRoot';
+import {useHeaderStyles, useContentStyles, useFooterStyles} from 'utils/theme';
 
 const NewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const route = useRoute<NewsScreenRouteProp>();
+
+  const headerStyles = useHeaderStyles();
+  const contentStyles = useContentStyles();
+  const footerStyles = useFooterStyles();
 
   const [viewMode, setViewMode] = useState<number>(0);
 
@@ -26,8 +30,8 @@ const NewsScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header>
-        <NB.Left>
+      <NB.Header style={headerStyles.header}>
+        <NB.Left style={headerStyles.left}>
           <NB.Button
             transparent
             onPress={() => {
@@ -36,23 +40,24 @@ const NewsScreen = (): JSX.Element => {
             <NB.Icon name="arrow-back" />
           </NB.Button>
         </NB.Left>
-        <NB.Body>
-          <NB.Title>News</NB.Title>
+        <NB.Body style={headerStyles.body}>
+          <NB.Title style={headerStyles.bodyText}>News</NB.Title>
         </NB.Body>
         <NB.Right />
       </NB.Header>
       <NB.Content
-        contentContainerStyle={viewMode === 0 ? newsStyles.content : null}>
+        style={contentStyles.content}
+        contentContainerStyle={viewMode === 0 ? footerStyles.content : null}>
         {viewMode === 0 ? (
           <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
         ) : (
           <ReadingView title={route.params.title} link={route.params.link} />
         )}
       </NB.Content>
-      <NB.Footer>
-        <NB.FooterTab style={newsStyles.footerTab}>
+      <NB.Footer style={footerStyles.footer}>
+        <NB.FooterTab style={footerStyles.footerTab}>
           {viewMode === 0 ? (
-            <NB.View style={newsStyles.footerView}>
+            <NB.View style={footerStyles.footerView}>
               <NB.Button transparent>
                 <NB.Icon name="arrow-back" type="MaterialIcons" />
               </NB.Button>
@@ -68,9 +73,9 @@ const NewsScreen = (): JSX.Element => {
             </NB.View>
           )}
         </NB.FooterTab>
-        <NB.FooterTab style={newsStyles.footerTab}>
+        <NB.FooterTab style={footerStyles.footerTab}>
           <SegmentedControl
-            style={newsStyles.footerSegment}
+            style={footerStyles.footerSegment}
             values={['Web', 'Read']}
             selectedIndex={viewMode}
             onChange={(event) => {
@@ -78,9 +83,9 @@ const NewsScreen = (): JSX.Element => {
             }}
           />
         </NB.FooterTab>
-        <NB.FooterTab style={newsStyles.footerTab}>
+        <NB.FooterTab style={footerStyles.footerTab}>
           {viewMode === 0 ? (
-            <NB.View style={newsStyles.footerView}>
+            <NB.View style={footerStyles.footerView}>
               <NB.Button transparent>
                 <NB.Icon name="arrow-back" type="MaterialIcons" />
               </NB.Button>

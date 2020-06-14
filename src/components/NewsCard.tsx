@@ -8,6 +8,10 @@ type NewsCardProps = {
   type: 'Large' | 'Medium' | 'Small';
   title: string;
   description?: string;
+  style: {
+    backgroundColor: string;
+    textColor: string;
+  };
   onPress: () => void;
 };
 
@@ -17,19 +21,20 @@ export const NewsCardStyles = StyleSheet.create({
   },
 });
 
-const cardStyles = StyleSheet.create({
-  listItem: {
-    marginVertical: -12,
-  },
-  card: {
-    flex: 1,
-  },
-  cardItem: {
-    flexDirection: 'column',
-  },
-});
-
 export default function NewsCard(news: NewsCardProps) {
+  const cardStyles = StyleSheet.create({
+    listItem: {
+      marginVertical: -12,
+    },
+    card: {
+      backgroundColor: news.style.backgroundColor,
+      flex: 1,
+    },
+    cardItem: {
+      flexDirection: 'column',
+    },
+  });
+
   switch (news.type) {
     case 'Small':
       return (
