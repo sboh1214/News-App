@@ -45,6 +45,6 @@ export default function NewsCard(news: NewsCardProps) {
         </NB.Card>
       );
     default:
-      return <NB.Text>Error</NB.Text>;
+      return <NB.Text testID="error">Error</NB.Text>;
   }
 }

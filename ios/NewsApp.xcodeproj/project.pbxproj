@@ -217,7 +217,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 86Z79M22CQ;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1150;
 					};
 					368EC5682494D973006D119B = {
 						CreatedOnToolsVersion = 11.5;
@@ -525,6 +525,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sboh1214.newsapp.ios;
 				PRODUCT_NAME = "News App";
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "NewsApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -551,6 +552,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sboh1214.newsapp.ios;
 				PRODUCT_NAME = "News App";
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "NewsApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

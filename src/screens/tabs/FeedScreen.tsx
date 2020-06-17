@@ -6,7 +6,7 @@ import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import * as rssParser from 'react-native-rss-parser';
 import {RefreshControl} from 'react-native';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
-import {fetchUserRssList} from 'utils/fetch';
+import {fetchUserRssList} from 'utils/firebase';
 import {
   useHeaderStyles,
   useContentStyles,

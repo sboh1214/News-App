@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createElement } from 'react';
 import {StyleSheet} from 'react-native';
 import * as NB from 'native-base';
 
@@ -23,7 +23,7 @@ export default function RichTextBox({richText}: RichTextBoxProps) {
       const start = text.indexOf('<b>');
       const end = text.indexOf('</b>');
       if (start !== 0) {
-        children.push(React.createElement(NB.Text, {}, text.slice(0, start)));
+        children.push(createElement(NB.Text, {}, text.slice(0, start)));
       }
       children.push(
         React.createElement(
@@ -34,10 +34,10 @@ export default function RichTextBox({richText}: RichTextBoxProps) {
       );
       text = text.substr(end + 4);
     } else {
-      children.push(React.createElement(NB.Text, {}, text));
+      children.push(createElement(NB.Text, {}, text));
       break;
     }
   }
-  const parent = React.createElement(NB.Text, {}, children);
+  const parent = createElement(NB.Text, {testID: 'parent'}, children);
   return parent;
 }

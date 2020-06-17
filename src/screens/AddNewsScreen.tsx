@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import {RefreshControl} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import withRoot from 'components/withRoot';
-import {fetchAllRssList} from 'utils/fetch';
+import {fetchAllRssList} from 'utils/firebase';
 import {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const AddNewsScreen = (): JSX.Element => {

@@ -95,6 +95,9 @@ export function useFooterStyles() {
   const appTheme = useAppTheme();
 
   return StyleSheet.create({
+    content: {
+      flex: 1,
+    },
     footer: {
       backgroundColor: appTheme.card,
     },

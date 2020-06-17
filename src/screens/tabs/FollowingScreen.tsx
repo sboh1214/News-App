@@ -3,7 +3,7 @@ import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
-import {fetchUserRssList, deleteUserRss} from 'utils/fetch';
+import {fetchUserRssList, deleteUserRss} from 'utils/firebase';
 import {RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';

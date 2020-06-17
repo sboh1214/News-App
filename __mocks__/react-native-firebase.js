@@ -1,8 +1,10 @@
 jest.mock('@react-native-firebase/app');
 jest.mock('@react-native-firebase/auth');
 jest.mock('@react-native-firebase/firestore');
-
+jest.mock('@react-native-firebase/analytics');
 jest.mock('invariant');
+
+jest.mock('../src/utils/firebase');
 
 jest.mock('react-native-device-info', () => {
   return {

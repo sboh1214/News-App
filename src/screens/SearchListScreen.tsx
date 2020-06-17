@@ -3,14 +3,16 @@ import * as NB from 'native-base';
 import {searchNewsByNaver, NaverNews} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
 import {RefreshControl} from 'react-native';
-import analytics from '@react-native-firebase/analytics';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
 import withRoot from 'components/withRoot';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
 import {useHeaderStyles, useContentStyles} from 'utils/theme';
+import {
+  sendAnalyticsSearch,
+  addUserSearchHistories,
+  updateUserSearchHistories,
+} from 'utils/firebase';
 
 const SearchListScreen = (): JSX.Element => {
   const navigation = useNavigation();
@@ -27,40 +29,21 @@ const SearchListScreen = (): JSX.Element => {
 
   const searchNews = (string: string) => {
     setIsLoading(true);
-    analytics().logEvent('search', {
-      query: string,
-    });
+    sendAnalyticsSearch(string);
     if (route.params?.id) {
-      firestore()
-        .collection('users')
-        .doc(auth().currentUser?.uid)
-        .collection('searchHistories')
-        .doc(route.params?.id)
-        .update({
-          query: string,
-          date: firestore.Timestamp.now(),
-        })
-        .catch(() => {
-          NB.Toast.show({
-            text: 'Error : Unable to update search history',
-            type: 'danger',
-          });
+      updateUserSearchHistories(route.params?.id).catch(() => {
+        NB.Toast.show({
+          text: 'Error : Unable to update search history',
+          type: 'danger',
         });
+      });
     } else {
-      firestore()
-        .collection('users')
-        .doc(auth().currentUser?.uid)
-        .collection('searchHistories')
-        .add({
-          query: string,
-          date: firestore.Timestamp.now(),
-        })
-        .catch(() => {
-          NB.Toast.show({
-            text: 'Error : Unable to save search history',
-            type: 'danger',
-          });
+      addUserSearchHistories(string).catch(() => {
+        NB.Toast.show({
+          text: 'Error : Unable to save search history',
+          type: 'danger',
         });
+      });
     }
     searchNewsByNaver(string ?? '')
       .then((result) => {

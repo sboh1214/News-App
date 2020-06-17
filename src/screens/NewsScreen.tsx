@@ -41,7 +41,9 @@ const NewsScreen = (): JSX.Element => {
           </NB.Button>
         </NB.Left>
         <NB.Body style={headerStyles.body}>
-          <NB.Title style={headerStyles.bodyText}>News</NB.Title>
+          <NB.Title style={headerStyles.bodyText} testID="title">
+            News
+          </NB.Title>
         </NB.Body>
         <NB.Right />
       </NB.Header>

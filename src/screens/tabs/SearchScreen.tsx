@@ -12,6 +12,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
 import withRoot from 'components/withRoot';
 import {useHeaderStyles, useContentStyles} from 'utils/theme';
+import {fetchUserSearchHistories} from 'utils/firebase';
 
 const SearchScreen = (): JSX.Element => {
   const navigation = useNavigation();
@@ -30,15 +31,10 @@ const SearchScreen = (): JSX.Element => {
 
   const onGetAll = () => {
     setIsLoading(true);
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .collection('searchHistories')
-      .orderBy('date', 'desc')
-      .get()
-      .then((snapshot) => {
-        if (snapshot) {
-          setHistories(snapshot.docs);
+    fetchUserSearchHistories()
+      .then((docs) => {
+        if (docs) {
+          setHistories(docs);
         }
         setIsLoading(false);
       })
