@@ -12,6 +12,5 @@ jest.mock('@react-navigation/native', () => ({
 
 test('NewsScreen', async () => {
   const {getByTestId} = render(<NewsScreen />);
-
   expect(getByTestId('title').props.children).toBe('News');
 });

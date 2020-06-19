@@ -23,14 +23,12 @@ export const NewsCardStyles = StyleSheet.create({
 
 export default function NewsCard(news: NewsCardProps) {
   const cardStyles = StyleSheet.create({
-    listItem: {
-      marginVertical: -12,
-    },
     card: {
       backgroundColor: news.style.backgroundColor,
       flex: 1,
     },
     cardItem: {
+      backgroundColor: news.style.backgroundColor,
       flexDirection: 'column',
     },
   });
@@ -39,8 +37,14 @@ export default function NewsCard(news: NewsCardProps) {
     case 'Small':
       return (
         <NB.Card style={cardStyles.card}>
-          <NB.CardItem button onPress={news.onPress}>
-            <RichTextBox richText={news.title ?? ''} />
+          <NB.CardItem
+            style={cardStyles.cardItem}
+            button
+            onPress={news.onPress}>
+            <RichTextBox
+              richText={news.title ?? ''}
+              textColor={news.style.textColor}
+            />
           </NB.CardItem>
         </NB.Card>
       );

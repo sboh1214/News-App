@@ -1,7 +1,6 @@
-jest.mock('@react-native-firebase/app');
-jest.mock('@react-native-firebase/auth');
-jest.mock('@react-native-firebase/firestore');
-jest.mock('@react-native-firebase/analytics');
+import {NativeModules} from 'react-native';
+import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
+
 jest.mock('invariant');
 
 jest.mock('../src/utils/firebase');
@@ -13,7 +12,7 @@ jest.mock('react-native-device-info', () => {
   };
 });
 
-import {NativeModules} from 'react-native';
+jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
 NativeModules.RNGoogleSignin = {
   BUTTON_SIZE_ICON: 0,

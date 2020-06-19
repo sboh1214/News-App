@@ -14,6 +14,6 @@ module.exports = {
   ],
   setupFiles: [
     './node_modules/react-native-gesture-handler/jestSetup.js',
-    './__mocks__/react-native-firebase.js',
+    './__mocks__/mock.js',
   ],
 };

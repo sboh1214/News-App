@@ -8,5 +8,5 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 test('SearchScreen', async () => {
-  const {getByTestId} = render(<SearchScreen />);
+  render(<SearchScreen />);
 });
