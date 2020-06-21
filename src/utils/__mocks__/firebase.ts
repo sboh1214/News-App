@@ -39,4 +39,4 @@ export function fetchAllRssList() {
   });
 }
 
-export function sendAnalyticsSearch(id) {}
+export function sendAnalyticsSearch(id: string) {}

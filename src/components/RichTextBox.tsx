@@ -1,4 +1,4 @@
-import React, {createElement} from 'react';
+import React from 'react';
 import {StyleSheet, Text} from 'react-native';
 
 type RichTextBoxProps = {
@@ -10,6 +10,7 @@ export default function RichTextBox({richText, textColor}: RichTextBoxProps) {
   const styles = StyleSheet.create({
     basic: {
       color: textColor,
+      textAlign: 'left',
     },
     bold: {
       fontWeight: 'bold',
@@ -21,29 +22,37 @@ export default function RichTextBox({richText, textColor}: RichTextBoxProps) {
   });
 
   let text = richText;
-  const children: React.ReactNode[] = [];
+  const children: Array<any> = [];
   while (text.length !== 0) {
     if (text.indexOf('<b>') !== -1) {
       const start = text.indexOf('<b>');
       const end = text.indexOf('</b>');
       if (start !== 0) {
-        children.push(
-          createElement(Text, {style: styles.basic}, text.slice(0, start)),
-        );
+        children.push({text: text.slice(0, start), type: 'medium'});
       }
-      children.push(
-        React.createElement(
-          Text,
-          {style: styles.bold},
-          text.slice(start + 3, end),
-        ),
-      );
+      children.push({
+        text: text.slice(start + 3, end),
+        type: 'bold',
+      });
       text = text.substr(end + 4);
     } else {
-      children.push(createElement(Text, {}, text));
+      children.push({text, type: 'medium'});
       break;
     }
   }
-  const parent = createElement(Text, {testID: 'parent'}, children);
-  return parent;
+
+  return (
+    <Text style={styles.basic}>
+      {children.map((value) => {
+        switch (value.type) {
+          case 'medium':
+            return <Text style={styles.basic}>{value.text}</Text>;
+          case 'bold':
+            return <Text style={styles.bold}>{value.text}</Text>;
+          default:
+            return <Text style={styles.basic}>{value.text}</Text>;
+        }
+      })}
+    </Text>
+  );
 }

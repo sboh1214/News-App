@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import * as NB from 'native-base';
 import AccountBox from 'components/AccountBox';
-import {Linking} from 'react-native';
+import {Linking, StyleSheet} from 'react-native';
 import withRoot from 'components/withRoot';
 import SegmentedControl from '@react-native-community/segmented-control';
 import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
@@ -16,6 +16,10 @@ const SettingsScreen = (): JSX.Element => {
 
   const {version, build} = getVersionAndBuild();
 
+  const styles = StyleSheet.create({
+    segment: {height: 48, flex: 1},
+  });
+
   return (
     <NB.Container>
       <NB.Header style={headerStyles.header}>
@@ -25,16 +29,16 @@ const SettingsScreen = (): JSX.Element => {
       </NB.Header>
       <NB.Content style={contentStyles.content}>
         <NB.List>
-          <NB.ListItem itemDivider>
-            <NB.Text>Account</NB.Text>
+          <NB.ListItem style={{backgroundColor: appTheme.card}} itemDivider>
+            <NB.Text style={{color: appTheme.text}}>Account</NB.Text>
           </NB.ListItem>
-          <AccountBox />
-          <NB.ListItem itemDivider>
-            <NB.Text>Appearance</NB.Text>
+          <AccountBox style={{textColor: appTheme.text}} />
+          <NB.ListItem style={{backgroundColor: appTheme.card}} itemDivider>
+            <NB.Text style={{color: appTheme.text}}>Appearance</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
             <SegmentedControl
-              style={{height: 48, flex: 1}}
+              style={styles.segment}
               values={['System', 'Light', 'Dark']}
               selectedIndex={themeMode}
               onChange={(event) => {
@@ -42,8 +46,8 @@ const SettingsScreen = (): JSX.Element => {
               }}
             />
           </NB.ListItem>
-          <NB.ListItem itemDivider>
-            <NB.Text>About</NB.Text>
+          <NB.ListItem style={{backgroundColor: appTheme.card}} itemDivider>
+            <NB.Text style={{color: appTheme.text}}>About</NB.Text>
           </NB.ListItem>
           <NB.ListItem>
             <NB.Text style={{color: appTheme.text}}>

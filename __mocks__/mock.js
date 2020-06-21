@@ -5,6 +5,7 @@ jest.mock('invariant');
 
 jest.mock('../src/utils/firebase');
 jest.mock('../src/utils/version');
+jest.mock('../src/utils/NaverNews');
 
 jest.mock('react-native-device-info', () => {
   return {
@@ -30,4 +31,4 @@ NativeModules.RNGoogleSignin = {
   currentUserAsync: jest.fn(),
 };
 
-export {NativeModules};
+export default {NativeModules};

@@ -61,7 +61,7 @@ const SearchListScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header style={{...headerStyles.header, height: 84}}>
+      <NB.Header style={headerStyles.thickHeader}>
         <NB.Left style={headerStyles.left}>
           <NB.Button
             transparent

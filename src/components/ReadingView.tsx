@@ -21,7 +21,7 @@ export default function ReadingView({title, link}: ReadingViewProps) {
 
   useEffect(() => {
     const request = new XMLHttpRequest();
-    request.onreadystatechange = (e) => {
+    request.onreadystatechange = () => {
       if (request.readyState !== 4) {
         return;
       }
@@ -29,7 +29,7 @@ export default function ReadingView({title, link}: ReadingViewProps) {
         const doc = cheerio.load(request.response);
         const contents = doc('#articleBodyContents');
         const list: Array<string> = [];
-        contents.each((index: number, element: CheerioElement) => {
+        contents.each((_: number, element: CheerioElement) => {
           list.push(doc(element).text());
         });
         setContentList(list);

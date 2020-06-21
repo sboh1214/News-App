@@ -11,7 +11,7 @@ export type NaverNews = {
 };
 
 export async function searchNewsByNaver(
-  searchString: String,
+  searchString: string,
 ): Promise<Array<NaverNews>> {
   const url = `https://openapi.naver.com/v1/search/news?query=${searchString}&display=20`;
 

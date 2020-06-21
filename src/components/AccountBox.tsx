@@ -8,19 +8,27 @@ import {StyleSheet} from 'react-native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {onUserAuthChanged} from 'utils/firebase';
 
-const styles = StyleSheet.create({
-  google: {
-    width: 192,
-    height: 48,
-  },
-});
+type AccountBoxProps = {
+  style: {
+    textColor: string;
+  };
+};
 
-export default function AccountBox() {
+export default function AccountBox({style}: AccountBoxProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 
-  // Handle user state changes
+  const styles = StyleSheet.create({
+    text: {
+      color: style.textColor,
+    },
+    google: {
+      width: 192,
+      height: 48,
+    },
+  });
 
+  // Handle user state changes
   async function signInGoogle(): Promise<FirebaseAuthTypes.UserCredential> {
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
@@ -32,9 +40,10 @@ export default function AccountBox() {
       setUser(newUser);
       if (isLoading) setIsLoading(false);
     };
-    const subscriber = onUserAuthChanged(onChanged);
-    return subscriber;
-  }, []);
+    onUserAuthChanged(onChanged).then((subscriber) => {
+      return subscriber;
+    });
+  }, [isLoading]);
 
   if (isLoading) {
     return <NB.Text>Loading</NB.Text>;
@@ -74,7 +83,7 @@ export default function AccountBox() {
               'https://facebook.github.io/react-native/docs/assets/favicon.png',
           }}
         />
-        <NB.Text>Welcome {user?.email}</NB.Text>
+        <NB.Text style={styles.text}>Welcome {user?.email}</NB.Text>
       </NB.ListItem>
       <NB.ListItem
         onPress={() => {
@@ -93,7 +102,7 @@ export default function AccountBox() {
               });
             });
         }}>
-        <NB.Text>Sign Out</NB.Text>
+        <NB.Text style={styles.text}>Sign Out</NB.Text>
       </NB.ListItem>
     </NB.View>
   );

@@ -54,6 +54,11 @@ export function useHeaderStyles() {
       backgroundColor: appTheme.card,
       borderColor: appTheme.card,
     },
+    thickHeader: {
+      backgroundColor: appTheme.card,
+      borderColor: appTheme.card,
+      height: 84,
+    },
     left: {
       flex: 0,
     },

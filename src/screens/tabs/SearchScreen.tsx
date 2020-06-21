@@ -104,7 +104,7 @@ const SearchScreen = (): JSX.Element => {
 
   return (
     <NB.Container>
-      <NB.Header style={{...headerStyles.header, height: 84}}>
+      <NB.Header style={headerStyles.thickHeader}>
         <NB.Body>
           <SearchBox initialText="" onEnter={onEnter} />
         </NB.Body>
