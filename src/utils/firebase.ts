@@ -2,6 +2,11 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import analytics from '@react-native-firebase/analytics';
 
+export async function onUserAuthChanged(onChanged: any) {
+  const subscriber = auth().onAuthStateChanged(onChanged);
+  return subscriber;
+}
+
 export async function fetchUserSearchHistories() {
   const snapshot = await firestore()
     .collection('users')

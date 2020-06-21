@@ -4,6 +4,7 @@ import mockAsyncStorage from '@react-native-community/async-storage/jest/async-s
 jest.mock('invariant');
 
 jest.mock('../src/utils/firebase');
+jest.mock('../src/utils/version');
 
 jest.mock('react-native-device-info', () => {
   return {

@@ -1,3 +1,8 @@
+export async function onUserAuthChanged(onChanged: any) {
+  const subscriber = onChanged;
+  return subscriber;
+}
+
 export function fetchUserSearchHistories() {
   return new Promise((resolve) => {
     process.nextTick(() => resolve());

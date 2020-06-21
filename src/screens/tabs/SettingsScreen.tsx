@@ -1,13 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import * as NB from 'native-base';
-import DeviceInfo from 'react-native-device-info';
 import AccountBox from 'components/AccountBox';
 import {Linking} from 'react-native';
 import withRoot from 'components/withRoot';
 import SegmentedControl from '@react-native-community/segmented-control';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
+import getVersionAndBuild from 'utils/version';
 
 const SettingsScreen = (): JSX.Element => {
   const [themeMode, setThemeMode] = useState<number>(0);
@@ -16,17 +14,7 @@ const SettingsScreen = (): JSX.Element => {
   const contentStyles = useContentStyles();
   const appTheme = useAppTheme();
 
-  const fetchThemeMode = async () => {
-    const mode = await firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .get();
-    return mode.data()?.theme;
-  };
-
-  useEffect(() => {
-    fetchThemeMode().then((mode) => {});
-  }, []);
+  const {version, build} = getVersionAndBuild();
 
   return (
     <NB.Container>
@@ -59,7 +47,7 @@ const SettingsScreen = (): JSX.Element => {
           </NB.ListItem>
           <NB.ListItem>
             <NB.Text style={{color: appTheme.text}}>
-              Version : {DeviceInfo.getVersion()}({DeviceInfo.getBuildNumber()})
+              Version : {version}({build})
             </NB.Text>
           </NB.ListItem>
           <NB.ListItem

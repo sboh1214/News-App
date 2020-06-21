@@ -8,6 +8,6 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 test('FollowingScreen', async () => {
-  const {getByTestId} = render(<FollowingScreen />);
-  expect(getByTestId('title').props.children).toBe('Following');
+  const {getByText} = render(<FollowingScreen />);
+  expect(getByText('Following')).toBeTruthy();
 });

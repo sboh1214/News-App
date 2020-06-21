@@ -6,6 +6,7 @@ import {
 } from '@react-native-community/google-signin';
 import {StyleSheet} from 'react-native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {onUserAuthChanged} from 'utils/firebase';
 
 const styles = StyleSheet.create({
   google: {
@@ -27,11 +28,11 @@ export default function AccountBox() {
   }
 
   useEffect(() => {
-    const onAuthStateChanged = (newUser: FirebaseAuthTypes.User | null) => {
+    const onChanged = (newUser: FirebaseAuthTypes.User | null) => {
       setUser(newUser);
       if (isLoading) setIsLoading(false);
     };
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    const subscriber = onUserAuthChanged(onChanged);
     return subscriber;
   }, []);
 

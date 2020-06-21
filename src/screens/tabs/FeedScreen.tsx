@@ -64,9 +64,7 @@ const FeedScreen = (): JSX.Element => {
       <NB.Header style={headerStyles.header}>
         <NB.Left style={headerStyles.left} />
         <NB.Body style={headerStyles.body}>
-          <NB.Title style={headerStyles.bodyText} testID="title">
-            Feed
-          </NB.Title>
+          <NB.Title style={headerStyles.bodyText}>Feed</NB.Title>
         </NB.Body>
         <NB.Right style={headerStyles.right}>
           <NB.Button transparent onPress={onAddClick}>
