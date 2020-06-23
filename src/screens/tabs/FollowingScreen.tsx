@@ -7,13 +7,14 @@ import {fetchUserRssList, deleteUserRss} from 'utils/firebase';
 import {RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
-import {useHeaderStyles, useContentStyles} from 'utils/theme';
+import {useHeaderStyles, useContentStyles, useListStyles} from 'utils/theme';
 
 const FollowingScreen = (): JSX.Element => {
   const navigation = useNavigation();
 
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
+  const listStyles = useListStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rssList, setRssList] = useState<
@@ -47,36 +48,36 @@ const FollowingScreen = (): JSX.Element => {
       <NB.Content
         style={contentStyles.content}
         refreshControl={<RefreshControl refreshing={isLoading} />}>
-        <NB.ListItem itemDivider>
-          <NB.Text>Saved & History</NB.Text>
+        <NB.ListItem itemDivider style={listStyles.header}>
+          <NB.Text style={listStyles.text}>Saved & History</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem style={listStyles.body}>
+          <NB.Text style={listStyles.text}>Saved</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem style={listStyles.body}>
+          <NB.Text style={listStyles.text}>History</NB.Text>
+        </NB.ListItem>
+        <NB.ListItem itemDivider style={listStyles.header}>
+          <NB.Text style={listStyles.text}>Leading List</NB.Text>
         </NB.ListItem>
         <NB.ListItem>
-          <NB.Text>Saved</NB.Text>
-        </NB.ListItem>
-        <NB.ListItem>
-          <NB.Text>History</NB.Text>
-        </NB.ListItem>
-        <NB.ListItem itemDivider>
-          <NB.Text>Leading List</NB.Text>
-        </NB.ListItem>
-        <NB.ListItem>
-          <NB.Text>Please wait</NB.Text>
+          <NB.Text style={listStyles.text}>Please wait</NB.Text>
         </NB.ListItem>
         <SwipeListView
           data={rssList}
           ListHeaderComponent={() => {
             return (
-              <NB.View>
-                <NB.Text>Feed (RSS)</NB.Text>
+              <NB.View style={listStyles.header}>
+                <NB.Text style={listStyles.text}>Feed (RSS)</NB.Text>
               </NB.View>
             );
           }}
           renderItem={(data) => (
             <NB.ListItem
               key={data.item.id}
-              style={searchStyles.listItem}
+              style={{...searchStyles.listItem, ...listStyles.body}}
               noIndent>
-              <NB.Text>
+              <NB.Text style={listStyles.text}>
                 {data.item.data().pressId} {data.item.data().rssId}
               </NB.Text>
             </NB.ListItem>

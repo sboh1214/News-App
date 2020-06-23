@@ -6,18 +6,25 @@ import {StyleSheet} from 'react-native';
 type ReadingViewProps = {
   title: string;
   link: string;
+  style: {
+    textColor: string;
+  };
 };
 
-const readingViewStyle = StyleSheet.create({
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    margin: 6,
-  },
-});
-
-export default function ReadingView({title, link}: ReadingViewProps) {
+export default function ReadingView({title, link, style}: ReadingViewProps) {
   const [contentList, setContentList] = useState<Array<string>>();
+
+  const readingViewStyle = StyleSheet.create({
+    title: {
+      color: style.textColor,
+      fontSize: 32,
+      fontWeight: 'bold',
+      margin: 6,
+    },
+    body: {
+      color: style.textColor,
+    },
+  });
 
   useEffect(() => {
     const request = new XMLHttpRequest();
@@ -43,7 +50,7 @@ export default function ReadingView({title, link}: ReadingViewProps) {
     <NB.View>
       <NB.Text style={readingViewStyle.title}>{title}</NB.Text>
       {contentList?.map((value) => {
-        return <NB.Text>{value}</NB.Text>;
+        return <NB.Text style={readingViewStyle.body}>{value}</NB.Text>;
       })}
     </NB.View>
   );

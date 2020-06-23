@@ -85,6 +85,22 @@ export function useContentStyles() {
   });
 }
 
+export function useListStyles() {
+  const appTheme = useAppTheme();
+
+  return StyleSheet.create({
+    header: {
+      backgroundColor: appTheme.card,
+    },
+    body: {
+      backgroundColor: appTheme.background,
+    },
+    text: {
+      color: appTheme.text,
+    },
+  });
+}
+
 export function useNewsCardStyles() {
   const appTheme = useAppTheme();
 

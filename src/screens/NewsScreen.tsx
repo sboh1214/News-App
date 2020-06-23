@@ -7,12 +7,17 @@ import {Share} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
 import ReadingView from 'components/ReadingView';
 import withRoot from 'components/withRoot';
-import {useHeaderStyles, useContentStyles, useFooterStyles} from 'utils/theme';
+import useAppTheme, {
+  useHeaderStyles,
+  useContentStyles,
+  useFooterStyles,
+} from 'utils/theme';
 
 const NewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const route = useRoute<NewsScreenRouteProp>();
 
+  const appTheme = useAppTheme();
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
   const footerStyles = useFooterStyles();
@@ -53,7 +58,11 @@ const NewsScreen = (): JSX.Element => {
         {viewMode === 0 ? (
           <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
         ) : (
-          <ReadingView title={route.params.title} link={route.params.link} />
+          <ReadingView
+            title={route.params.title}
+            link={route.params.link}
+            style={{textColor: appTheme.text}}
+          />
         )}
       </NB.Content>
       <NB.Footer style={footerStyles.footer}>

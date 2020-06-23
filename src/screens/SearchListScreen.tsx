@@ -7,7 +7,11 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
 import withRoot from 'components/withRoot';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
-import {useHeaderStyles, useContentStyles} from 'utils/theme';
+import {
+  useHeaderStyles,
+  useContentStyles,
+  useNewsCardStyles,
+} from 'utils/theme';
 import {
   sendAnalyticsSearch,
   addUserSearchHistories,
@@ -20,6 +24,7 @@ const SearchListScreen = (): JSX.Element => {
 
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
+  const newsCardStyles = useNewsCardStyles();
 
   const [searchString, setSearchString] = useState<string>(
     route.params?.text ?? '',
@@ -107,6 +112,7 @@ const SearchListScreen = (): JSX.Element => {
                       link: item.link,
                     });
                   }}
+                  style={newsCardStyles.newsCard}
                 />
               </NB.ListItem>
             );

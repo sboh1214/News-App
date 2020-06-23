@@ -11,12 +11,13 @@ import {formatRelative} from 'date-fns';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
 import withRoot from 'components/withRoot';
-import {useHeaderStyles, useContentStyles} from 'utils/theme';
+import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
 import {fetchUserSearchHistories} from 'utils/firebase';
 
 const SearchScreen = (): JSX.Element => {
   const navigation = useNavigation();
 
+  const appTheme = useAppTheme();
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
 
@@ -118,7 +119,7 @@ const SearchScreen = (): JSX.Element => {
         ListHeaderComponent={() => {
           return (
             <NB.View>
-              <NB.Text>Search History</NB.Text>
+              <NB.Text style={{color: appTheme.text}}>Search History</NB.Text>
               <NB.Button onPress={onDeleteAll}>
                 <NB.Text>Delete All</NB.Text>
               </NB.Button>
@@ -128,15 +129,20 @@ const SearchScreen = (): JSX.Element => {
         renderItem={(data) => (
           <NB.ListItem
             noIndent
-            style={searchStyles.listItem}
+            style={{
+              ...searchStyles.listItem,
+              backgroundColor: appTheme.background,
+            }}
             onPress={() => {
               navigation.navigate('SearchListScreen', {
                 text: data.item.data().query,
                 id: data.item.id,
               });
             }}>
-            <NB.Text>{data.item.data().query}</NB.Text>
-            <NB.Text>
+            <NB.Text style={{color: appTheme.text}}>
+              {data.item.data().query}
+            </NB.Text>
+            <NB.Text style={{color: appTheme.text}}>
               {formatRelative(data.item.data().date.toDate(), new Date())}
             </NB.Text>
           </NB.ListItem>

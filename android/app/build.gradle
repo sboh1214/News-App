@@ -136,8 +136,8 @@ android {
         applicationId "com.sboh1214.newsapp.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 64
-        versionName "0.6.11"
+        versionCode 65
+        versionName "0.7.0"
         multiDexEnabled true
     }
     splits {
