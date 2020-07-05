@@ -42,7 +42,7 @@ export default function RichTextBox({richText, textColor}: RichTextBoxProps) {
   }
 
   return (
-    <Text style={styles.basic}>
+    <Text style={styles.basic} testID="container">
       {children.map((value) => {
         switch (value.type) {
           case 'medium':
