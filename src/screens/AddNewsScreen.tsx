@@ -2,15 +2,16 @@ import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, ScrollView} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import withRoot from 'components/withRoot';
 import {fetchAllRssList} from 'utils/firebase';
-import {useHeaderStyles, useContentStyles} from 'utils/theme';
+import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
 
 const AddNewsScreen = (): JSX.Element => {
   const navigation = useNavigation();
 
+  const appTheme = useAppTheme();
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
 
@@ -88,7 +89,7 @@ const AddNewsScreen = (): JSX.Element => {
         </NB.Body>
         <NB.Right style={headerStyles.right} />
       </NB.Header>
-      <NB.Content
+      <ScrollView
         style={contentStyles.content}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={getAll} />
@@ -102,14 +103,14 @@ const AddNewsScreen = (): JSX.Element => {
                   onPress(item.pressId, item.rssId, item.rssUrl);
                   // navigation.goBack();
                 }}>
-                <NB.Text>
+                <NB.Text style={{color: appTheme.text}}>
                   {item.pressName} {item.rssId}
                 </NB.Text>
               </NB.ListItem>
             );
           })}
         </NB.List>
-      </NB.Content>
+      </ScrollView>
     </NB.Container>
   );
 };

@@ -5,7 +5,7 @@ import FeedScreen from 'screens/tabs/FeedScreen';
 import SearchScreen from 'screens/tabs/SearchScreen';
 import FollowingScreen from 'screens/tabs/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
-import React, {useEffect, useState, createContext} from 'react';
+import React from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
 import SettingsScreen from 'screens/tabs/SettingsScreen';
 import NewsScreen from 'screens/NewsScreen';
@@ -13,9 +13,8 @@ import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DarkTheme, LightTheme, ThemeContextProvider} from 'utils/theme';
-import AsyncStorage from '@react-native-community/async-storage';
-import {useColorScheme} from 'react-native';
+import {DarkTheme, ThemeContextProvider} from 'utils/theme';
+import {Text} from 'react-native';
 
 type TabBarIcon = {
   focused: boolean;

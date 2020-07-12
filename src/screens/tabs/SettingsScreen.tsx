@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import * as NB from 'native-base';
 import AccountBox from 'components/AccountBox';
-import {Linking, StyleSheet} from 'react-native';
+import {Linking, StyleSheet, ScrollView} from 'react-native';
 import withRoot from 'components/withRoot';
 import SegmentedControl from '@react-native-community/segmented-control';
 import useAppTheme, {
@@ -30,7 +30,7 @@ const SettingsScreen = (): JSX.Element => {
           <NB.Title style={headerStyles.bodyText}>Account & Settings</NB.Title>
         </NB.Body>
       </NB.Header>
-      <NB.Content style={contentStyles.content}>
+      <ScrollView style={contentStyles.content}>
         <NB.List>
           <NB.ListItem style={{backgroundColor: appTheme.card}} itemDivider>
             <NB.Text style={{color: appTheme.text}}>Account</NB.Text>
@@ -64,7 +64,7 @@ const SettingsScreen = (): JSX.Element => {
             <NB.Text style={{color: appTheme.text}}>Email to developer</NB.Text>
           </NB.ListItem>
         </NB.List>
-      </NB.Content>
+      </ScrollView>
     </NB.Container>
   );
 };

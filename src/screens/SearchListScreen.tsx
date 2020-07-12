@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import {searchNewsByNaver, NaverNews} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, ScrollView} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp} from 'utils/params';
 import withRoot from 'components/withRoot';
@@ -86,7 +86,7 @@ const SearchListScreen = (): JSX.Element => {
         </NB.Body>
         <NB.Right style={headerStyles.right} />
       </NB.Header>
-      <NB.Content
+      <ScrollView
         style={contentStyles.content}
         refreshControl={
           <RefreshControl
@@ -118,7 +118,7 @@ const SearchListScreen = (): JSX.Element => {
             );
           })}
         </NB.List>
-      </NB.Content>
+      </ScrollView>
     </NB.Container>
   );
 };

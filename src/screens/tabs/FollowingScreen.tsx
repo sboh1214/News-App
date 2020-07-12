@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {fetchUserRssList, deleteUserRss} from 'utils/firebase';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, ScrollView} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {searchStyles} from 'utils/styles';
 import {useHeaderStyles, useContentStyles, useListStyles} from 'utils/theme';
@@ -45,7 +45,7 @@ const FollowingScreen = (): JSX.Element => {
           </NB.Button>
         </NB.Right>
       </NB.Header>
-      <NB.Content
+      <ScrollView
         style={contentStyles.content}
         refreshControl={<RefreshControl refreshing={isLoading} />}>
         <NB.ListItem itemDivider style={listStyles.header}>
@@ -98,7 +98,7 @@ const FollowingScreen = (): JSX.Element => {
           leftOpenValue={75}
           rightOpenValue={-75}
         />
-      </NB.Content>
+      </ScrollView>
     </NB.Container>
   );
 };

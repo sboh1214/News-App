@@ -1,5 +1,6 @@
-import {StyleSheet, AsyncStorage, useColorScheme} from 'react-native';
+import {StyleSheet, useColorScheme} from 'react-native';
 import React, {useContext, createContext, useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type ThemeColors = {
   primary: string;

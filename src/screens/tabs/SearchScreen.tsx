@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import * as NB from 'native-base';
 import SearchBox from 'components/SearchBox';
 import {useNavigation} from '@react-navigation/native';

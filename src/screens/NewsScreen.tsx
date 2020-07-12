@@ -3,7 +3,7 @@ import * as NB from 'native-base';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {WebView} from 'react-native-webview';
 import {NewsScreenRouteProp} from 'utils/params';
-import {Share} from 'react-native';
+import {Share, View, ScrollView} from 'react-native';
 import SegmentedControl from '@react-native-community/segmented-control';
 import ReadingView from 'components/ReadingView';
 import withRoot from 'components/withRoot';
@@ -52,9 +52,10 @@ const NewsScreen = (): JSX.Element => {
         </NB.Body>
         <NB.Right />
       </NB.Header>
-      <NB.Content
-        style={contentStyles.content}
-        contentContainerStyle={viewMode === 0 ? footerStyles.content : null}>
+      <ScrollView
+        style={{...contentStyles.content}}
+        // contentContainerStyle={viewMode === 0 ? footerStyles.content : null}
+      >
         {viewMode === 0 ? (
           <WebView originWhitelist={['*']} source={{uri: route.params.link}} />
         ) : (
@@ -64,7 +65,7 @@ const NewsScreen = (): JSX.Element => {
             style={{textColor: appTheme.text}}
           />
         )}
-      </NB.Content>
+      </ScrollView>
       <NB.Footer style={footerStyles.footer}>
         <NB.FooterTab style={footerStyles.footerTab}>
           {viewMode === 0 ? (

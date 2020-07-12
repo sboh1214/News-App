@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import * as rssParser from 'react-native-rss-parser';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, ScrollView, Button} from 'react-native';
 import NewsCard, {NewsCardStyles} from 'components/NewsCard';
 import {fetchUserRssList} from 'utils/firebase';
 import {
@@ -15,6 +15,7 @@ import {
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
+
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
   const newsCardStyles = useNewsCardStyles();
@@ -72,7 +73,7 @@ const FeedScreen = (): JSX.Element => {
           </NB.Button>
         </NB.Right>
       </NB.Header>
-      <NB.Content
+      <ScrollView
         style={contentStyles.content}
         refreshControl={
           <RefreshControl
@@ -116,7 +117,7 @@ const FeedScreen = (): JSX.Element => {
             })}
           </NB.List>
         )}
-      </NB.Content>
+      </ScrollView>
     </NB.Container>
   );
 };
