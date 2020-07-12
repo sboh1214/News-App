@@ -1,6 +1,6 @@
 {
   "name": "news-app",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -18,7 +18,7 @@
     }
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/async-storage": "1.11.0",
     "@react-native-community/google-signin": "4.0.3",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/segmented-control": "1.6.1",

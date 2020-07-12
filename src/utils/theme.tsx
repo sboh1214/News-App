@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import {useColorScheme, StyleSheet} from 'react-native';
+import {StyleSheet, AsyncStorage, useColorScheme} from 'react-native';
+import React, {useContext, createContext, useEffect, useState} from 'react';
 
 type ThemeColors = {
   primary: string;
@@ -31,19 +31,55 @@ export const DarkTheme = {
   },
 };
 
-export default function useAppTheme() {
+export const ThemeContext = createContext({
+  theme: LightTheme,
+  themeMode: 0,
+  changeTheme: (_) => {},
+});
+
+export const ThemeContextProvider = ({children}) => {
   const colorScheme = useColorScheme();
-  const [appTheme, setAppTheme] = useState<ThemeColors>(LightTheme.colors);
+  const [theme, setTheme] = useState<any>(LightTheme);
+  const [themeMode, setThemeMode] = useState<number>(0);
+
+  const restoreTheme = () => {
+    AsyncStorage.getItem('@theme').then((theme) => {
+      setThemeMode(parseInt(theme ?? '0', 10));
+      if (theme === '0') {
+        if (colorScheme === 'dark') {
+          setTheme(DarkTheme);
+        } else {
+          setTheme(LightTheme);
+        }
+      } else if (theme === '2') {
+        setTheme(DarkTheme);
+      } else {
+        setTheme(LightTheme);
+      }
+    });
+  };
 
   useEffect(() => {
-    if (colorScheme === 'dark') {
-      setAppTheme(DarkTheme.colors);
-    } else {
-      setAppTheme(LightTheme.colors);
-    }
+    restoreTheme();
   }, [colorScheme]);
 
-  return appTheme;
+  const changeTheme = (newTheme: number) => {
+    AsyncStorage.setItem('@theme', newTheme.toString()).then(() => {
+      setThemeMode(newTheme);
+      restoreTheme();
+    });
+  };
+
+  return (
+    <ThemeContext.Provider value={{theme, themeMode, changeTheme}}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export default function useAppTheme() {
+  const navTheme = useContext(ThemeContext);
+  return navTheme.theme.colors;
 }
 
 export function useHeaderStyles() {

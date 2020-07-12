@@ -1,15 +1,18 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import * as NB from 'native-base';
 import AccountBox from 'components/AccountBox';
 import {Linking, StyleSheet} from 'react-native';
 import withRoot from 'components/withRoot';
 import SegmentedControl from '@react-native-community/segmented-control';
-import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
+import useAppTheme, {
+  useHeaderStyles,
+  useContentStyles,
+  ThemeContext,
+} from 'utils/theme';
 import getVersionAndBuild from 'utils/version';
 
 const SettingsScreen = (): JSX.Element => {
-  const [themeMode, setThemeMode] = useState<number>(0);
-
+  const theme = useContext(ThemeContext);
   const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
   const appTheme = useAppTheme();
@@ -40,9 +43,9 @@ const SettingsScreen = (): JSX.Element => {
             <SegmentedControl
               style={styles.segment}
               values={['System', 'Light', 'Dark']}
-              selectedIndex={themeMode}
+              selectedIndex={theme.themeMode}
               onChange={(event) => {
-                setThemeMode(event.nativeEvent.selectedSegmentIndex);
+                theme.changeTheme(event.nativeEvent.selectedSegmentIndex);
               }}
             />
           </NB.ListItem>

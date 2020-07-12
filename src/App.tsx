@@ -5,16 +5,17 @@ import FeedScreen from 'screens/tabs/FeedScreen';
 import SearchScreen from 'screens/tabs/SearchScreen';
 import FollowingScreen from 'screens/tabs/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, createContext} from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
 import SettingsScreen from 'screens/tabs/SettingsScreen';
 import NewsScreen from 'screens/NewsScreen';
 import {StackParamList} from 'utils/params';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GoogleSignin} from '@react-native-community/google-signin';
-import {Appearance} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DarkTheme, LightTheme} from 'utils/theme';
+import {DarkTheme, LightTheme, ThemeContextProvider} from 'utils/theme';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useColorScheme} from 'react-native';
 
 type TabBarIcon = {
   focused: boolean;
@@ -64,25 +65,19 @@ export default function NewsApp() {
       '74031474846-hpnonovcn67k9bs6bu8gr2bvglg5847b.apps.googleusercontent.com',
   });
 
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
-  useEffect(() => {
-    setIsDarkTheme(Appearance.getColorScheme() === 'dark');
-    Appearance.addChangeListener((theme) => {
-      setIsDarkTheme(theme.colorScheme === 'dark');
-    });
-  }, []);
-
   return (
-    <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="TabScreen" component={TabScreen} />
-        <Stack.Screen name="SearchListScreen" component={SearchListScreen} />
-        <Stack.Screen name="AddNewsScreen" component={AddNewsScreen} />
-        <Stack.Screen name="NewsScreen" component={NewsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeContextProvider>
+      <NavigationContainer theme={DarkTheme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <Stack.Screen name="TabScreen" component={TabScreen} />
+          <Stack.Screen name="SearchListScreen" component={SearchListScreen} />
+          <Stack.Screen name="AddNewsScreen" component={AddNewsScreen} />
+          <Stack.Screen name="NewsScreen" component={NewsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeContextProvider>
   );
 }
