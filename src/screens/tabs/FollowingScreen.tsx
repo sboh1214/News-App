@@ -2,7 +2,6 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {fetchUserRssList, deleteUserRss} from 'utils/firebase';
 import {RefreshControl, ScrollView, Text, Button} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -34,9 +33,7 @@ const FollowingScreen = (): JSX.Element => {
   const listStyles = useListStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [rssList, setRssList] = useState<
-    FirebaseFirestoreTypes.QueryDocumentSnapshot[]
-  >();
+  const [rssList, setRssList] = useState<Array<any>>();
 
   const onAddClick = () => {
     navigation.navigate(SCREEN.AddNews);
@@ -74,9 +71,12 @@ const FollowingScreen = (): JSX.Element => {
       <SwipeListView
         data={rssList}
         renderItem={(data) => (
-          <NB.ListItem key={data.item.id} style={{...listStyles.body}} noIndent>
+          <NB.ListItem
+            key={`${data.index}`}
+            style={{...listStyles.body}}
+            noIndent>
             <NB.Text style={listStyles.text}>
-              {data.item.data().pressId} {data.item.data().rssId}
+              {data.item.pressName} {data.item.rssName}
             </NB.Text>
           </NB.ListItem>
         )}

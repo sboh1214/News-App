@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
 import cheerio from 'react-native-cheerio';
 import {StyleSheet} from 'react-native';
+import {getSelector} from 'utils/firebase';
 
 type ReadingViewProps = {
   title: string;
@@ -34,12 +35,17 @@ export default function ReadingView({title, link, style}: ReadingViewProps) {
       }
       if (request.status === 200) {
         const doc = cheerio.load(request.response);
-        const contents = doc('#articleBodyContents');
-        const list: Array<string> = [];
-        contents.each((_: number, element: CheerioElement) => {
-          list.push(doc(element).text());
+        const regex = /^(([^:/?#]+:)?(?:\/\/((?:([^/?#:]*):([^/?#:]*)@)?([^/?#:]*)(?::([^/?#:]*))?)))?([^?#]*)(\?[^#]*)?(#.*)?$/;
+        const host = (link.match(regex) ?? ['', '', '', 'error'])[3];
+        getSelector(host).then((selector) => {
+          const contents = doc(selector);
+          const list: Array<string> = [];
+          contents.each((_: number, element: CheerioElement) => {
+            list.push(doc(element).text());
+          });
+          console.log({selector, list});
+          setContentList(list);
         });
-        setContentList(list);
       }
     };
     request.open('GET', link);

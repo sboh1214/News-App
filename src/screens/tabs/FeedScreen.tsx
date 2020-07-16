@@ -1,23 +1,10 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import * as rssParser from 'react-native-rss-parser';
-import {
-  RefreshControl,
-  ScrollView,
-  Text,
-  View,
-  Button,
-  FlatList,
-} from 'react-native';
+import {RefreshControl, Text, View, Button, FlatList} from 'react-native';
 import NewsCard from 'components/NewsCard';
 import {fetchUserRssList} from 'utils/firebase';
-import {
-  useHeaderStyles,
-  useContentStyles,
-  useNewsCardStyles,
-  useIsDark,
-} from 'utils/theme';
+import {useHeaderStyles, useNewsCardStyles, useIsDark} from 'utils/theme';
 import {SCREEN} from 'utils/navigation';
 import withRoot from 'components/withRoot';
 
@@ -35,18 +22,15 @@ const FeedScreen = (): JSX.Element => {
     navigation.addListener('focus', setHeaderOptions);
   }, [navigation, isDark]);
 
-  const contentStyles = useContentStyles();
   const newsCardStyles = useNewsCardStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [feedList, setFeedList] = useState<rssParser.FeedItem[]>();
-  const [rssList, setRssList] = useState<
-    FirebaseFirestoreTypes.QueryDocumentSnapshot[]
-  >();
+  const [rssList, setRssList] = useState<Array<any>>();
 
   const fetchFeed = async () => {
     const list = await rssList?.map(async (rssItem) => {
-      const res = await fetch(rssItem.data().rssUrl);
+      const res = await fetch(rssItem.rssUrl);
       const data = await res.text();
       const rss = await rssParser.parse(data);
       return rss.items;
@@ -66,7 +50,7 @@ const FeedScreen = (): JSX.Element => {
   useEffect(() => {
     fetchFeed()
       .then((res) => {
-        setFeedList(res?.slice(0, 20));
+        setFeedList(res);
         setIsLoading(false);
       })
       .catch(() => {
@@ -79,8 +63,8 @@ const FeedScreen = (): JSX.Element => {
   };
 
   return (
-    <ScrollView
-      style={contentStyles.content}
+    <FlatList
+      data={feedList}
       refreshControl={
         <RefreshControl
           refreshing={isLoading}
@@ -88,40 +72,42 @@ const FeedScreen = (): JSX.Element => {
             setIsLoading(true);
           }}
         />
-      }>
-      {feedList === undefined ? (
-        <View>
-          <Text>There is no feed.</Text>
-          <Button
-            title="Go to add feed"
-            onPress={() => {
-              navigation.navigate(SCREEN.AddNews);
-            }}
-          />
-        </View>
-      ) : (
-        <FlatList
-          data={feedList}
-          renderItem={({item}) => {
-            return (
-              <View key={item.title}>
-                <NewsCard
-                  style={newsCardStyles.newsCard}
-                  type="Small"
-                  title={item.title}
-                  onPress={() => {
-                    navigation.navigate(SCREEN.News, {
-                      title: item.title,
-                      link: item.links[0].url,
-                    });
-                  }}
-                />
-              </View>
-            );
-          }}
-        />
-      )}
-    </ScrollView>
+      }
+      ListHeaderComponent={() => {
+        if (feedList === undefined) {
+          return (
+            <View>
+              <Text>There is no feed.</Text>
+              <Button
+                title="Go to add feed"
+                onPress={() => {
+                  navigation.navigate(SCREEN.AddNews);
+                }}
+              />
+            </View>
+          );
+        } else {
+          return null;
+        }
+      }}
+      renderItem={({item, index}) => {
+        return (
+          <View key={index.toString()}>
+            <NewsCard
+              style={newsCardStyles.newsCard}
+              type="Small"
+              title={item.title}
+              onPress={() => {
+                navigation.navigate(SCREEN.News, {
+                  title: item.title,
+                  link: item.links[0].url,
+                });
+              }}
+            />
+          </View>
+        );
+      }}
+    />
   );
 };
 

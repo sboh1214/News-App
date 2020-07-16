@@ -43,14 +43,26 @@ export default function RichTextBox({richText, textColor}: RichTextBoxProps) {
 
   return (
     <Text style={styles.basic} testID="container">
-      {children.map((value) => {
+      {children.map((value, index) => {
         switch (value.type) {
           case 'medium':
-            return <Text style={styles.basic}>{value.text}</Text>;
+            return (
+              <Text key={index} style={styles.basic}>
+                {value.text}
+              </Text>
+            );
           case 'bold':
-            return <Text style={styles.bold}>{value.text}</Text>;
+            return (
+              <Text key={index} style={styles.bold}>
+                {value.text}
+              </Text>
+            );
           default:
-            return <Text style={styles.basic}>{value.text}</Text>;
+            return (
+              <Text key={index} style={styles.basic}>
+                {value.text}
+              </Text>
+            );
         }
       })}
     </Text>
