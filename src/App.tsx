@@ -5,16 +5,15 @@ import FeedScreen from 'screens/tabs/FeedScreen';
 import SearchScreen from 'screens/tabs/SearchScreen';
 import FollowingScreen from 'screens/tabs/FollowingScreen';
 import SearchListScreen from 'screens/SearchListScreen';
-import React from 'react';
+import React, {useContext} from 'react';
 import AddNewsScreen from 'screens/AddNewsScreen';
 import SettingsScreen from 'screens/tabs/SettingsScreen';
 import NewsScreen from 'screens/NewsScreen';
-import {StackParamList} from 'utils/params';
+import {StackParamList, SCREEN} from 'utils/navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DarkTheme, ThemeContextProvider} from 'utils/theme';
-import {Text} from 'react-native';
+import {ThemeContextProvider, ThemeContext} from 'utils/theme';
 
 type TabBarIcon = {
   focused: boolean;
@@ -48,15 +47,30 @@ function TabScreen() {
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
       }}>
-      <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Following" component={FollowingScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name={SCREEN.Feed} component={FeedScreen} />
+      <Tab.Screen name={SCREEN.Search} component={SearchScreen} />
+      <Tab.Screen name={SCREEN.Following} component={FollowingScreen} />
+      <Tab.Screen name={SCREEN.Settings} component={SettingsScreen} />
     </Tab.Navigator>
   );
 }
 
 const Stack = createStackNavigator<StackParamList>();
+
+function Navigator() {
+  const {theme} = useContext(ThemeContext);
+
+  return (
+    <NavigationContainer theme={theme}>
+      <Stack.Navigator>
+        <Stack.Screen name={SCREEN.Tab} component={TabScreen} />
+        <Stack.Screen name={SCREEN.SearchList} component={SearchListScreen} />
+        <Stack.Screen name={SCREEN.AddNews} component={AddNewsScreen} />
+        <Stack.Screen name={SCREEN.News} component={NewsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
 export default function NewsApp() {
   GoogleSignin.configure({
@@ -66,17 +80,7 @@ export default function NewsApp() {
 
   return (
     <ThemeContextProvider>
-      <NavigationContainer theme={DarkTheme}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="TabScreen" component={TabScreen} />
-          <Stack.Screen name="SearchListScreen" component={SearchListScreen} />
-          <Stack.Screen name="AddNewsScreen" component={AddNewsScreen} />
-          <Stack.Screen name="NewsScreen" component={NewsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Navigator />
     </ThemeContextProvider>
   );
 }

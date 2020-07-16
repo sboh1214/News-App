@@ -27,7 +27,7 @@ export function fetchUserRssList() {
   });
 }
 
-export function deleteUserRss(id: string) {
+export function deleteUserRss(_: string) {
   return new Promise((resolve) => {
     process.nextTick(() => resolve());
   });
@@ -39,4 +39,4 @@ export function fetchAllRssList() {
   });
 }
 
-export function sendAnalyticsSearch(id: string) {}
+export function sendAnalyticsSearch(_: string) {}

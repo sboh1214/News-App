@@ -1,18 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import * as NB from 'native-base';
-import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import {RefreshControl, ScrollView} from 'react-native';
+import {RefreshControl, ScrollView, FlatList, Text} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import withRoot from 'components/withRoot';
 import {fetchAllRssList} from 'utils/firebase';
-import useAppTheme, {useHeaderStyles, useContentStyles} from 'utils/theme';
+import {useAppTheme, useContentStyles} from 'utils/theme';
+import withRoot from 'components/withRoot';
 
 const AddNewsScreen = (): JSX.Element => {
-  const navigation = useNavigation();
-
   const appTheme = useAppTheme();
-  const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -71,47 +67,29 @@ const AddNewsScreen = (): JSX.Element => {
   }, []);
 
   return (
-    <NB.Container>
-      <NB.Header style={headerStyles.header}>
-        <NB.Left style={headerStyles.left}>
-          <NB.Button
-            transparent
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <NB.Icon name="arrow-back" />
-          </NB.Button>
-        </NB.Left>
-        <NB.Body style={headerStyles.body}>
-          <NB.Title style={headerStyles.bodyText} testID="title">
-            Add News
-          </NB.Title>
-        </NB.Body>
-        <NB.Right style={headerStyles.right} />
-      </NB.Header>
-      <ScrollView
-        style={contentStyles.content}
-        refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={getAll} />
-        }>
-        <NB.List>
-          {rssList?.map((item) => {
-            return (
-              <NB.ListItem
-                key={item.id}
-                onPress={() => {
-                  onPress(item.pressId, item.rssId, item.rssUrl);
-                  // navigation.goBack();
-                }}>
-                <NB.Text style={{color: appTheme.text}}>
-                  {item.pressName} {item.rssId}
-                </NB.Text>
-              </NB.ListItem>
-            );
-          })}
-        </NB.List>
-      </ScrollView>
-    </NB.Container>
+    <ScrollView
+      style={contentStyles.content}
+      refreshControl={
+        <RefreshControl refreshing={isLoading} onRefresh={getAll} />
+      }>
+      <FlatList
+        data={rssList}
+        renderItem={({item}) => {
+          return (
+            <NB.ListItem
+              key={item.id}
+              onPress={() => {
+                onPress(item.pressId, item.rssId, item.rssUrl);
+                // navigation.goBack();
+              }}>
+              <Text style={{color: appTheme.text}}>
+                {item.pressName} {item.rssId}
+              </Text>
+            </NB.ListItem>
+          );
+        }}
+      />
+    </ScrollView>
   );
 };
 

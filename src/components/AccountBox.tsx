@@ -4,7 +4,7 @@ import {
   GoogleSigninButton,
   GoogleSignin,
 } from '@react-native-community/google-signin';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {onUserAuthChanged} from 'utils/firebase';
 
@@ -46,7 +46,7 @@ export default function AccountBox({style}: AccountBoxProps) {
   }, [isLoading]);
 
   if (isLoading) {
-    return <NB.Text>Loading</NB.Text>;
+    return <Text>Loading</Text>;
   }
   if (!user) {
     return (
@@ -74,16 +74,9 @@ export default function AccountBox({style}: AccountBoxProps) {
     );
   }
   return (
-    <NB.View>
+    <View>
       <NB.ListItem>
-        <NB.Thumbnail
-          large
-          source={{
-            uri:
-              'https://facebook.github.io/react-native/docs/assets/favicon.png',
-          }}
-        />
-        <NB.Text style={styles.text}>Welcome {user?.email}</NB.Text>
+        <Text style={styles.text}>Welcome {user?.email}</Text>
       </NB.ListItem>
       <NB.ListItem
         onPress={() => {
@@ -102,8 +95,8 @@ export default function AccountBox({style}: AccountBoxProps) {
               });
             });
         }}>
-        <NB.Text style={styles.text}>Sign Out</NB.Text>
+        <Text style={styles.text}>Sign Out</Text>
       </NB.ListItem>
-    </NB.View>
+    </View>
   );
 }

@@ -1,6 +1,13 @@
-import {StyleSheet, useColorScheme} from 'react-native';
-import React, {useContext, createContext, useEffect, useState} from 'react';
+import {StyleSheet, useColorScheme, Text} from 'react-native';
+import React, {
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 type ThemeColors = {
   primary: string;
@@ -35,10 +42,10 @@ export const DarkTheme = {
 export const ThemeContext = createContext({
   theme: LightTheme,
   themeMode: 0,
-  changeTheme: (_) => {},
+  changeTheme: (_: any) => {},
 });
 
-export const ThemeContextProvider = ({children}) => {
+export const ThemeContextProvider = ({children}: any) => {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState<any>(LightTheme);
   const [themeMode, setThemeMode] = useState<number>(0);
@@ -78,7 +85,12 @@ export const ThemeContextProvider = ({children}) => {
   );
 };
 
-export default function useAppTheme() {
+export function useIsDark() {
+  const navTheme = useContext(ThemeContext);
+  return navTheme.theme.dark;
+}
+
+export function useAppTheme() {
   const navTheme = useContext(ThemeContext);
   return navTheme.theme.colors;
 }
@@ -87,6 +99,11 @@ export function useHeaderStyles() {
   const appTheme = useAppTheme();
 
   return StyleSheet.create({
+    title: {
+      color: appTheme.text,
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
     header: {
       backgroundColor: appTheme.card,
       borderColor: appTheme.card,
@@ -150,14 +167,9 @@ export function useNewsCardStyles() {
 }
 
 export function useFooterStyles() {
-  const appTheme = useAppTheme();
-
   return StyleSheet.create({
     content: {
       flex: 1,
-    },
-    footer: {
-      backgroundColor: appTheme.card,
     },
     footerTab: {
       flex: 1,
@@ -170,4 +182,45 @@ export function useFooterStyles() {
       flex: 1,
     },
   });
+}
+
+type HeaderProps = {
+  left?: JSX.Element;
+  title?: string;
+  body?: JSX.Element;
+  right?: JSX.Element;
+};
+
+export function Header({left, title, body, right}: HeaderProps) {
+  const navigation = useNavigation();
+  const appTheme = useAppTheme();
+  const isDark = useIsDark();
+
+  const styles = StyleSheet.create({
+    title: {
+      color: appTheme.text,
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+  });
+
+  useLayoutEffect(() => {
+    navigation.addListener('focus', setHeaderOptions);
+  }, [navigation]);
+
+  useLayoutEffect(() => {
+    if (navigation.isFocused()) {
+      setHeaderOptions();
+    }
+  }, [isDark]);
+
+  const setHeaderOptions = () => {
+    navigation?.dangerouslyGetParent()?.setOptions({
+      headerLeft: () => left,
+      headerTitle: () =>
+        body ? body : <Text style={styles.title}>{title}</Text>,
+      headerRight: () => right,
+    });
+  };
+  return null;
 }

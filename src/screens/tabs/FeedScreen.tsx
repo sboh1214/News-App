@@ -1,22 +1,40 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
-import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import withRoot from 'components/withRoot';
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import * as rssParser from 'react-native-rss-parser';
-import {RefreshControl, ScrollView, Button} from 'react-native';
-import NewsCard, {NewsCardStyles} from 'components/NewsCard';
+import {
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+  Button,
+  FlatList,
+} from 'react-native';
+import NewsCard from 'components/NewsCard';
 import {fetchUserRssList} from 'utils/firebase';
 import {
   useHeaderStyles,
   useContentStyles,
   useNewsCardStyles,
+  useIsDark,
 } from 'utils/theme';
+import {SCREEN} from 'utils/navigation';
+import withRoot from 'components/withRoot';
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
-
   const headerStyles = useHeaderStyles();
+  const isDark = useIsDark();
+  const setHeaderOptions = () => {
+    navigation?.dangerouslyGetParent()?.setOptions({
+      headerTitle: () => <Text style={headerStyles.title}>{SCREEN.Feed}</Text>,
+      headerRight: () => <Button title="Add" onPress={onAddClick} />,
+    });
+  };
+  useLayoutEffect(() => {
+    navigation.addListener('focus', setHeaderOptions);
+  }, [navigation, isDark]);
+
   const contentStyles = useContentStyles();
   const newsCardStyles = useNewsCardStyles();
 
@@ -57,68 +75,53 @@ const FeedScreen = (): JSX.Element => {
   }, [rssList]);
 
   const onAddClick = () => {
-    navigation.navigate('AddNewsScreen');
+    navigation.navigate(SCREEN.AddNews);
   };
 
   return (
-    <NB.Container>
-      <NB.Header style={headerStyles.header}>
-        <NB.Left style={headerStyles.left} />
-        <NB.Body style={headerStyles.body}>
-          <NB.Title style={headerStyles.bodyText}>Feed</NB.Title>
-        </NB.Body>
-        <NB.Right style={headerStyles.right}>
-          <NB.Button transparent onPress={onAddClick}>
-            <NB.Icon name="add" />
-          </NB.Button>
-        </NB.Right>
-      </NB.Header>
-      <ScrollView
-        style={contentStyles.content}
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={() => {
-              setIsLoading(true);
+    <ScrollView
+      style={contentStyles.content}
+      refreshControl={
+        <RefreshControl
+          refreshing={isLoading}
+          onRefresh={() => {
+            setIsLoading(true);
+          }}
+        />
+      }>
+      {feedList === undefined ? (
+        <View>
+          <Text>There is no feed.</Text>
+          <Button
+            title="Go to add feed"
+            onPress={() => {
+              navigation.navigate(SCREEN.AddNews);
             }}
           />
-        }>
-        {feedList === undefined ? (
-          <NB.View>
-            <NB.Text>There is no feed.</NB.Text>
-            <NB.Button
-              onPress={() => {
-                navigation.navigate('AddNewsScreen');
-              }}>
-              <NB.Text>Go to add feed</NB.Text>
-            </NB.Button>
-          </NB.View>
-        ) : (
-          <NB.List>
-            {feedList?.map((item: rssParser.FeedItem) => {
-              return (
-                <NB.ListItem
-                  key={item.title}
-                  noBorder
-                  style={NewsCardStyles.listItem}>
-                  <NewsCard
-                    style={newsCardStyles.newsCard}
-                    type="Small"
-                    title={item.title}
-                    onPress={() => {
-                      navigation.navigate('NewsScreen', {
-                        title: item.title,
-                        link: item.links[0].url,
-                      });
-                    }}
-                  />
-                </NB.ListItem>
-              );
-            })}
-          </NB.List>
-        )}
-      </ScrollView>
-    </NB.Container>
+        </View>
+      ) : (
+        <FlatList
+          data={feedList}
+          renderItem={({item}) => {
+            return (
+              <View key={item.title}>
+                <NewsCard
+                  style={newsCardStyles.newsCard}
+                  type="Small"
+                  title={item.title}
+                  onPress={() => {
+                    navigation.navigate(SCREEN.News, {
+                      title: item.title,
+                      link: item.links[0].url,
+                    });
+                  }}
+                />
+              </View>
+            );
+          }}
+        />
+      )}
+    </ScrollView>
   );
 };
 

@@ -1,30 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import * as NB from 'native-base';
 import {searchNewsByNaver, NaverNews} from 'utils/NaverNews';
 import SearchBox from 'components/SearchBox';
-import {RefreshControl, ScrollView} from 'react-native';
+import {RefreshControl, ScrollView, View, FlatList} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {SearchListScreenRouteProp} from 'utils/params';
-import withRoot from 'components/withRoot';
-import NewsCard, {NewsCardStyles} from 'components/NewsCard';
-import {
-  useHeaderStyles,
-  useContentStyles,
-  useNewsCardStyles,
-} from 'utils/theme';
+import {SearchListScreenRouteProp, SCREEN} from 'utils/navigation';
+import NewsCard from 'components/NewsCard';
+import {useContentStyles, useNewsCardStyles} from 'utils/theme';
 import {
   sendAnalyticsSearch,
   addUserSearchHistories,
   updateUserSearchHistories,
 } from 'utils/firebase';
+import withRoot from 'components/withRoot';
 
 const SearchListScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const route = useRoute<SearchListScreenRouteProp>();
-
-  const headerStyles = useHeaderStyles();
   const contentStyles = useContentStyles();
   const newsCardStyles = useNewsCardStyles();
+
+  const setHeaderOptions = () => {
+    navigation?.setOptions({
+      headerTitle: () => (
+        <SearchBox
+          initialText={searchString}
+          onEnter={(newString: string) => {
+            setSearchString(newString);
+          }}
+        />
+      ),
+      headerRight: () => {},
+    });
+  };
+  useLayoutEffect(() => {
+    navigation.addListener('focus', setHeaderOptions);
+  }, [navigation]);
 
   const [searchString, setSearchString] = useState<string>(
     route.params?.text ?? '',
@@ -65,61 +76,37 @@ const SearchListScreen = (): JSX.Element => {
   }, [searchString]);
 
   return (
-    <NB.Container>
-      <NB.Header style={headerStyles.thickHeader}>
-        <NB.Left style={headerStyles.left}>
-          <NB.Button
-            transparent
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <NB.Icon name="arrow-back" />
-          </NB.Button>
-        </NB.Left>
-        <NB.Body style={headerStyles.body}>
-          <SearchBox
-            initialText={searchString}
-            onEnter={(newString: string) => {
-              setSearchString(newString);
-            }}
-          />
-        </NB.Body>
-        <NB.Right style={headerStyles.right} />
-      </NB.Header>
-      <ScrollView
-        style={contentStyles.content}
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={() => {
-              searchNews(searchString);
-            }}
-          />
-        }>
-        <NB.List>
-          {resultList?.map((item) => {
-            return (
-              <NB.ListItem
-                key={item.link}
-                noBorder
-                style={NewsCardStyles.listItem}>
-                <NewsCard
-                  type="Small"
-                  title={item.title}
-                  onPress={() => {
-                    navigation.navigate('NewsScreen', {
-                      title: item.title,
-                      link: item.link,
-                    });
-                  }}
-                  style={newsCardStyles.newsCard}
-                />
-              </NB.ListItem>
-            );
-          })}
-        </NB.List>
-      </ScrollView>
-    </NB.Container>
+    <ScrollView
+      style={contentStyles.content}
+      refreshControl={
+        <RefreshControl
+          refreshing={isLoading}
+          onRefresh={() => {
+            searchNews(searchString);
+          }}
+        />
+      }>
+      <FlatList
+        data={resultList}
+        renderItem={({item}) => {
+          return (
+            <View key={item.link}>
+              <NewsCard
+                type="Small"
+                title={item.title}
+                onPress={() => {
+                  navigation.navigate(SCREEN.News, {
+                    title: item.title,
+                    link: item.link,
+                  });
+                }}
+                style={newsCardStyles.newsCard}
+              />
+            </View>
+          );
+        }}
+      />
+    </ScrollView>
   );
 };
 

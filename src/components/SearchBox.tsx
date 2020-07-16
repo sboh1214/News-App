@@ -9,7 +9,9 @@ type SearchBoxProps = {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 12,
+    flex: 1,
+    width: 240,
+    margin: 3,
     backgroundColor: Platform.OS === 'android' ? 'white' : 'transparent',
   },
 });

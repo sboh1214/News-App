@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import * as NB from 'native-base';
+import {StyleSheet, Pressable, Text} from 'react-native';
 import RichTextBox from 'components/RichTextBox';
 
 type NewsCardProps = {
@@ -15,17 +14,16 @@ type NewsCardProps = {
   onPress: () => void;
 };
 
-export const NewsCardStyles = StyleSheet.create({
-  listItem: {
-    marginVertical: -12,
-  },
-});
-
 export default function NewsCard(news: NewsCardProps) {
   const cardStyles = StyleSheet.create({
     card: {
+      margin: 6,
+      padding: 6,
       backgroundColor: news.style.backgroundColor,
       flex: 1,
+      borderWidth: 1,
+      borderRadius: 12,
+      borderColor: '#777777',
     },
     cardItem: {
       backgroundColor: news.style.backgroundColor,
@@ -36,19 +34,14 @@ export default function NewsCard(news: NewsCardProps) {
   switch (news.type) {
     case 'Small':
       return (
-        <NB.Card style={cardStyles.card}>
-          <NB.CardItem
-            style={cardStyles.cardItem}
-            button
-            onPress={news.onPress}>
-            <RichTextBox
-              richText={news.title ?? ''}
-              textColor={news.style.textColor}
-            />
-          </NB.CardItem>
-        </NB.Card>
+        <Pressable onPress={news.onPress} style={cardStyles.card}>
+          <RichTextBox
+            richText={news.title ?? ''}
+            textColor={news.style.textColor}
+          />
+        </Pressable>
       );
     default:
-      return <NB.Text testID="error">Error</NB.Text>;
+      return <Text testID="error">Error</Text>;
   }
 }
