@@ -1,21 +1,50 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import * as rssParser from 'react-native-rss-parser';
-import {RefreshControl, Text, View, Button, FlatList} from 'react-native';
+import {
+  RefreshControl,
+  Text,
+  View,
+  Button,
+  FlatList,
+  Pressable,
+} from 'react-native';
 import NewsCard from 'components/NewsCard';
 import {fetchUserRssList} from 'utils/firebase';
-import {useHeaderStyles, useNewsCardStyles, useIsDark} from 'utils/theme';
+import {
+  useHeaderStyles,
+  useNewsCardStyles,
+  useIsDark,
+  useAppTheme,
+} from 'utils/theme';
 import {SCREEN} from 'utils/navigation';
 import withRoot from 'components/withRoot';
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 const FeedScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const headerStyles = useHeaderStyles();
   const isDark = useIsDark();
+  const colors = useAppTheme();
+
   const setHeaderOptions = () => {
     navigation?.dangerouslyGetParent()?.setOptions({
       headerTitle: () => <Text style={headerStyles.title}>{SCREEN.Feed}</Text>,
-      headerRight: () => <Button title="Add" onPress={onAddClick} />,
+      headerRight: () => (
+        <Pressable onPress={onAddClick}>
+          <Text
+            style={{color: colors.primary, marginHorizontal: 16, fontSize: 18}}>
+            Add
+          </Text>
+        </Pressable>
+      ),
     });
   };
   useLayoutEffect(() => {
@@ -50,7 +79,7 @@ const FeedScreen = (): JSX.Element => {
   useEffect(() => {
     fetchFeed()
       .then((res) => {
-        setFeedList(res);
+        setFeedList(shuffle(res));
         setIsLoading(false);
       })
       .catch(() => {
@@ -76,8 +105,10 @@ const FeedScreen = (): JSX.Element => {
       ListHeaderComponent={() => {
         if (feedList === undefined) {
           return (
-            <View>
-              <Text>There is no feed.</Text>
+            <View style={{flex: 1}}>
+              <Text style={{fontSize: 18, alignSelf: 'center'}}>
+                There is no feed.
+              </Text>
               <Button
                 title="Go to add feed"
                 onPress={() => {

@@ -10,6 +10,7 @@ type NewsCardProps = {
   style: {
     backgroundColor: string;
     textColor: string;
+    borderColor: string;
   };
   onPress: () => void;
 };
@@ -22,8 +23,8 @@ export default function NewsCard(news: NewsCardProps) {
       backgroundColor: news.style.backgroundColor,
       flex: 1,
       borderWidth: 1,
-      borderRadius: 12,
-      borderColor: '#777777',
+      borderRadius: 6,
+      borderColor: news.style.borderColor,
     },
     cardItem: {
       backgroundColor: news.style.backgroundColor,

@@ -6,7 +6,7 @@ import {RefreshControl, ScrollView, View, FlatList} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {SearchListScreenRouteProp, SCREEN} from 'utils/navigation';
 import NewsCard from 'components/NewsCard';
-import {useContentStyles, useNewsCardStyles} from 'utils/theme';
+import {useContentStyles, useNewsCardStyles, useAppTheme} from 'utils/theme';
 import {
   sendAnalyticsSearch,
   addUserSearchHistories,
@@ -19,11 +19,13 @@ const SearchListScreen = (): JSX.Element => {
   const route = useRoute<SearchListScreenRouteProp>();
   const contentStyles = useContentStyles();
   const newsCardStyles = useNewsCardStyles();
+  const colors = useAppTheme();
 
   const setHeaderOptions = () => {
     navigation?.setOptions({
       headerTitle: () => (
         <SearchBox
+          style={{iconColor: colors.text, textColor: colors.text}}
           initialText={searchString}
           onEnter={(newString: string) => {
             setSearchString(newString);

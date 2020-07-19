@@ -24,6 +24,7 @@ export default function ReadingView({title, link, style}: ReadingViewProps) {
     },
     body: {
       color: style.textColor,
+      margin: 6,
     },
   });
 

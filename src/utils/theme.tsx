@@ -1,4 +1,4 @@
-import {StyleSheet, useColorScheme, Text} from 'react-native';
+import {StyleSheet, useColorScheme, Text, Platform} from 'react-native';
 import React, {
   useContext,
   createContext,
@@ -51,15 +51,15 @@ export const ThemeContextProvider = ({children}: any) => {
   const [themeMode, setThemeMode] = useState<number>(0);
 
   const restoreTheme = () => {
-    AsyncStorage.getItem('@theme').then((theme) => {
-      setThemeMode(parseInt(theme ?? '0', 10));
-      if (theme === '0') {
+    AsyncStorage.getItem('@theme').then((restoredTheme) => {
+      setThemeMode(parseInt(restoredTheme ?? '0', 10));
+      if (restoredTheme === '0') {
         if (colorScheme === 'dark') {
           setTheme(DarkTheme);
         } else {
           setTheme(LightTheme);
         }
-      } else if (theme === '2') {
+      } else if (restoredTheme === '2') {
         setTheme(DarkTheme);
       } else {
         setTheme(LightTheme);
@@ -162,6 +162,7 @@ export function useNewsCardStyles() {
     newsCard: {
       backgroundColor: appTheme.background,
       textColor: appTheme.text,
+      borderColor: appTheme.border,
     },
   };
 }
@@ -173,9 +174,13 @@ export function useFooterStyles() {
     },
     footerTab: {
       flex: 1,
+      justifyContent: 'space-around',
+      marginHorizontal: 6,
+      backgroundColor: Platform.OS === 'android' ? '#00000000' : undefined,
     },
     footerView: {
       flexDirection: 'row',
+      alignItems: 'stretch',
     },
     footerSegment: {
       height: 48,

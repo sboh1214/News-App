@@ -3,13 +3,14 @@ import * as NB from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import withRoot from 'components/withRoot';
 import {fetchUserRssList, deleteUserRss} from 'utils/firebase';
-import {RefreshControl, ScrollView, Text, Button} from 'react-native';
+import {RefreshControl, ScrollView, Text, Pressable} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {
   useHeaderStyles,
   useContentStyles,
   useListStyles,
   useIsDark,
+  useAppTheme,
 } from 'utils/theme';
 import {SCREEN} from 'utils/navigation';
 
@@ -17,12 +18,21 @@ const FollowingScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const headerStyles = useHeaderStyles();
   const isDark = useIsDark();
+  const colors = useAppTheme();
+
   const setHeaderOptions = () => {
     navigation?.dangerouslyGetParent()?.setOptions({
       headerTitle: () => (
         <Text style={headerStyles.title}>{SCREEN.Following}</Text>
       ),
-      headerRight: () => <Button title="Add" onPress={onAddClick} />,
+      headerRight: () => (
+        <Pressable onPress={onAddClick}>
+          <Text
+            style={{color: colors.primary, marginHorizontal: 16, fontSize: 18}}>
+            Add
+          </Text>
+        </Pressable>
+      ),
     });
   };
   useLayoutEffect(() => {
@@ -40,10 +50,14 @@ const FollowingScreen = (): JSX.Element => {
   };
 
   useEffect(() => {
-    fetchUserRssList().then((docs) => {
-      setRssList(docs);
-      setIsLoading(false);
-    });
+    fetchUserRssList()
+      .then((docs) => {
+        setRssList(docs);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, [isLoading]);
 
   return (

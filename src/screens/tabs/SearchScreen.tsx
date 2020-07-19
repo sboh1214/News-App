@@ -2,7 +2,7 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import * as NB from 'native-base';
 import SearchBox from 'components/SearchBox';
 import {useNavigation} from '@react-navigation/native';
-import {RefreshControl, View, Text, Button} from 'react-native';
+import {RefreshControl, View, Text, Button, Pressable} from 'react-native';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
@@ -18,9 +18,17 @@ import withRoot from 'components/withRoot';
 const SearchScreen = (): JSX.Element => {
   const navigation = useNavigation();
   const isDark = useIsDark();
+  const colors = useAppTheme();
+
   const setHeaderOptions = () => {
     navigation?.dangerouslyGetParent()?.setOptions({
-      headerTitle: () => <SearchBox initialText="" onEnter={onEnter} />,
+      headerTitle: () => (
+        <SearchBox
+          style={{iconColor: colors.primary, textColor: colors.text}}
+          initialText=""
+          onEnter={onEnter}
+        />
+      ),
       headerRight: () => {},
     });
   };
@@ -122,8 +130,17 @@ const SearchScreen = (): JSX.Element => {
       data={histories}
       ListHeaderComponent={() => {
         return (
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{color: appTheme.text}}>Search History</Text>
+          <View style={{flexDirection: 'row', marginHorizontal: 12}}>
+            <Text
+              style={{
+                color: appTheme.text,
+                flex: 1,
+                textAlign: 'left',
+                alignSelf: 'center',
+                fontSize: 18,
+              }}>
+              Search History
+            </Text>
             <Button title="Delete All" onPress={onDeleteAll} />
           </View>
         );
@@ -133,6 +150,7 @@ const SearchScreen = (): JSX.Element => {
           style={{
             ...searchStyles.listItem,
             backgroundColor: appTheme.background,
+            margin: 0,
           }}
           onPress={() => {
             navigation.navigate(SCREEN.SearchList, {
@@ -147,13 +165,24 @@ const SearchScreen = (): JSX.Element => {
         </NB.ListItem>
       )}
       renderHiddenItem={(data) => (
-        <View>
-          <Button
-            title="Delete"
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Pressable
+            style={{alignSelf: 'center', padding: 9, marginHorizontal: 12}}
             onPress={() => {
               onDelete(data.item.id);
-            }}
-          />
+            }}>
+            <Text style={{color: '#f44336', fontSize: 20}}>Delete</Text>
+          </Pressable>
+          <Pressable
+            style={{alignSelf: 'center'}}
+            onPress={() => {
+              onDelete(data.item.id);
+            }}>
+            <Text
+              style={{color: '#f44336', fontSize: 20, marginHorizontal: 12}}>
+              Delete
+            </Text>
+          </Pressable>
         </View>
       )}
       leftOpenValue={75}

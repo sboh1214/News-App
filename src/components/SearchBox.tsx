@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import * as NB from 'native-base';
 import {StyleSheet, Platform} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type SearchBoxProps = {
   initialText: string;
   onEnter: (searchText: string) => void;
+  style: {
+    iconColor: string;
+    textColor: string;
+  };
 };
 
 const styles = StyleSheet.create({
@@ -16,15 +21,25 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function SearchBox({initialText, onEnter}: SearchBoxProps) {
+export default function SearchBox({
+  initialText,
+  style,
+  onEnter,
+}: SearchBoxProps) {
   const [text, setText] = useState<string>(initialText);
 
   return (
     <NB.Item rounded style={styles.container}>
-      <NB.Icon type="MaterialIcons" name="search" />
+      <Icon
+        name="search"
+        color={style.iconColor}
+        size={24}
+        style={{marginLeft: 12}}
+      />
       <NB.Input
         testID="input"
         placeholder="Search News..."
+        style={{color: style.textColor}}
         onSubmitEditing={() => {
           onEnter(text);
         }}
@@ -38,7 +53,11 @@ export default function SearchBox({initialText, onEnter}: SearchBoxProps) {
         onPress={() => {
           setText('');
         }}>
-        <NB.Icon type="MaterialIcons" name="backspace" />
+        <NB.Icon
+          type="MaterialIcons"
+          name="backspace"
+          color={style.iconColor}
+        />
       </NB.Button>
     </NB.Item>
   );

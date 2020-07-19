@@ -80,10 +80,9 @@ const AddNewsScreen = (): JSX.Element => {
               key={item.id}
               onPress={() => {
                 onPress(item.pressId, item.rssId, item.rssUrl);
-                // navigation.goBack();
               }}>
               <Text style={{color: appTheme.text}}>
-                {item.pressName} {item.rssId}
+                {item.pressName} {item.rssName}
               </Text>
             </NB.ListItem>
           );

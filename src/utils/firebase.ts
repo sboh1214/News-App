@@ -88,6 +88,10 @@ export async function deleteUserRss(id: string) {
 export async function fetchAllRssList() {
   const list = [];
   const snapshot = await firestore().collection(FS.Presses).get();
+  const category = await firestore()
+    .collection(FS.Strings)
+    .doc(FS.Categories)
+    .get();
   if (snapshot) {
     snapshot.docs.forEach((press) => {
       Object.keys(press.data().rss).forEach((key) => {
@@ -95,6 +99,7 @@ export async function fetchAllRssList() {
           pressId: press.id,
           pressName: press.data().name,
           rssId: key,
+          rssName: (category.data() ?? [])[key],
           rssUrl: press.data().rss[key],
         });
       });
